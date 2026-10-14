@@ -73,7 +73,7 @@ export function MakeItYours() {
             <legend className="mb-3 text-sm text-paper/70">Hardware</legend>
             <div className="flex flex-wrap gap-2">
               {HARDWARE_FINISHES.map((h) => (
-                <label key={h.id} className="cursor-pointer">
+                <label key={h.id} className="relative cursor-pointer">
                   <input
                     type="radio"
                     name="miy-hw"

@@ -126,7 +126,7 @@ export function Configurator() {
             <div className="hidden items-center justify-between gap-6 lg:flex">
               <p className="tabular">
                 <span className="block text-xs text-muted">Estimate per door, before GST</span>
-                <span className="font-display text-[2.2rem] leading-none" aria-live="polite">
+                <span className="font-display text-[2.2rem] leading-none" data-testid="unit-price">
                   {inr(est.unit)}
                 </span>
               </p>
@@ -184,7 +184,7 @@ export function Configurator() {
                 <legend className="mb-3 text-sm font-medium">Style</legend>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                   {STYLES.map((st) => (
-                    <label key={st.id} className="cursor-pointer">
+                    <label key={st.id} className="relative cursor-pointer">
                       <input
                         type="radio"
                         name="style"
@@ -422,10 +422,12 @@ export function Configurator() {
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-xl items-center justify-between gap-3">
           <p className="tabular min-w-0">
-            <span className="block text-[0.7rem] text-muted">
+            <span className="block whitespace-nowrap text-[0.7rem] text-muted">
               {draft.qty > 1 ? `${draft.qty} doors · before GST` : "Per door · before GST"}
             </span>
-            <span className="font-display text-[1.7rem] leading-none">{inr(est.unit * draft.qty)}</span>
+            <span className="font-display text-[1.7rem] leading-none" data-testid="mobile-price">
+              {inr(est.unit * draft.qty)}
+            </span>
           </p>
           <div className="flex items-center gap-2">
             <QtyStepper size="sm" value={draft.qty} onChange={(v) => set({ key: "qty", value: v })} />

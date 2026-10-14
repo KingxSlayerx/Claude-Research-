@@ -93,7 +93,7 @@ export function SwatchGroup({
       </legend>
       <div className="flex flex-wrap gap-x-3 gap-y-4">
         {swatches.map((s) => (
-          <label key={s.value} className="flex w-[4.25rem] cursor-pointer flex-col items-center gap-2 text-center">
+          <label key={s.value} className="relative flex w-[4.25rem] cursor-pointer flex-col items-center gap-2 text-center">
             <input type="radio" className="peer sr-only" name={name} value={s.value} checked={s.value === value} onChange={() => onChange(s.value)} />
             <span
               aria-hidden="true"

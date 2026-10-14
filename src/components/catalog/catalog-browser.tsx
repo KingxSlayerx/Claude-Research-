@@ -25,7 +25,7 @@ function FilterRow<T extends string>({
       <legend className="eyebrow mb-3 shrink-0 sm:float-left sm:mb-0 sm:w-24">{label}</legend>
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
         {all.map((o) => (
-          <label key={o.id} className="shrink-0 cursor-pointer">
+          <label key={o.id} className="relative shrink-0 cursor-pointer">
             <input
               type="radio"
               name={name}

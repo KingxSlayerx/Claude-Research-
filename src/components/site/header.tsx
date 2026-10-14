@@ -62,6 +62,7 @@ export function Header() {
   const quoteLabel = hydrated && doors > 0 ? `Quote (${doors})` : "Quote";
 
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-line/70 bg-ivory/88 backdrop-blur-md supports-[backdrop-filter]:bg-ivory/75">
       <a
         href="#main"
@@ -113,6 +114,7 @@ export function Header() {
           </span>
         </button>
       </div>
+    </header>
 
       <div
         id="mobile-menu"
@@ -138,6 +140,6 @@ export function Header() {
           </Link>
         </nav>
       </div>
-    </header>
+    </>
   );
 }
