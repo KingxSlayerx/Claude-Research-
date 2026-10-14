@@ -22,13 +22,15 @@ import {
   getStyle,
   type StyleId,
 } from "@/domain/catalog";
-import { adviceFor, colourOf, defaultConfig, type ConfigChange } from "@/domain/config";
+import { adviceFor, colourOf, type ConfigChange } from "@/domain/config";
 import { priceDoor, startingPrice } from "@/domain/pricing";
-import { specRows, summarize } from "@/domain/summary";
+import { specRows } from "@/domain/summary";
 import { feetInches, inr } from "@/domain/format";
 import { useQuoteStore } from "@/state/quote-store";
 import { useHydrated } from "@/state/hydration";
-import { DoorArt } from "@/components/ui/door-art";
+import { ConfiguratorPreview } from "./preview";
+import Image from "next/image";
+import { PRODUCT_RENDERS } from "@/content/assets";
 import { Button, ArrowIcon } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
 import { PriceBreakdown } from "@/components/quote/price-breakdown";
@@ -49,7 +51,6 @@ export function Configurator() {
   const cancelEdit = useQuoteStore((s) => s.cancelEdit);
   const startDesign = useQuoteStore((s) => s.startDesign);
   const editItem = useQuoteStore((s) => s.editItem);
-  const [showDims, setShowDims] = useState(true);
   const handled = useRef(false);
 
   // Apply ?style= or ?edit= once persisted state has loaded, then clean the URL.
@@ -105,28 +106,16 @@ export function Configurator() {
       <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-12 lg:gap-14">
         {/* Preview */}
         <div className="lg:col-span-7">
-          <div className="flex flex-col gap-4 pt-6 lg:sticky lg:top-[72px] lg:pt-6">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="eyebrow">{editing ? "Editing a quote item" : "Design your door"}</p>
-                <h1 className="font-display mt-1 text-[2.2rem] leading-tight lg:text-[2.6rem]">{s.name}</h1>
-              </div>
-              <label className="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
-                <input type="checkbox" className="h-4 w-4 accent-[var(--color-olive)]" checked={showDims} onChange={(e) => setShowDims(e.target.checked)} />
-                Dimensions
-              </label>
+          <div className="flex flex-col gap-4 pt-8 lg:sticky lg:top-12 lg:pt-8">
+            <div>
+              <p className="eyebrow-accent">{editing ? "Editing a door in your quote" : "Design your door"}</p>
+              <h1 className="font-display mt-1 text-[clamp(2rem,3.4vw,3rem)] leading-tight">{s.name}</h1>
             </div>
-            <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#e8e0d2] sm:aspect-[4/3] lg:aspect-auto lg:h-[calc(100svh-300px)] lg:min-h-[420px]">
-              {hydrated ? (
-                <DoorArt config={draft} dims={showDims} className="h-full w-full" label={`Preview: ${summarize(draft)}`} />
-              ) : (
-                <div className="h-full w-full animate-pulse bg-stone" aria-hidden="true" />
-              )}
-            </div>
+            <ConfiguratorPreview config={draft} ready={hydrated} />
             <div className="hidden items-center justify-between gap-6 lg:flex">
               <p className="tabular">
                 <span className="block text-xs text-muted">Estimate per door, before GST</span>
-                <span className="font-display text-[2.2rem] leading-none" data-testid="unit-price">
+                <span className="font-display text-[2rem] leading-none" data-testid="unit-price">
                   {inr(est.unit)}
                 </span>
               </p>
@@ -138,7 +127,7 @@ export function Configurator() {
               </div>
             </div>
             <p className="hidden text-xs text-muted lg:block">
-              Illustration of your configuration. Colours on screen are a guide; we bring physical samples to your site measurement.
+              A 3D visualisation of your configuration. Colours on screen are a guide; we bring physical samples to your site measurement.
             </p>
           </div>
         </div>
@@ -146,21 +135,21 @@ export function Configurator() {
         {/* Options */}
         <div className="lg:col-span-5">
           {editing && (
-            <div className="mt-6 flex items-center justify-between gap-4 border border-olive/40 bg-olive-soft px-4 py-3 text-sm">
+            <div className="mt-8 flex items-center justify-between gap-4 rounded-2xl bg-olive-soft px-5 py-3 text-sm">
               <span>You&rsquo;re editing a door in your quote.</span>
               <button type="button" className="underline underline-offset-4" onClick={() => cancelEdit()}>
                 Add as a new door instead
               </button>
             </div>
           )}
-          <nav aria-label="Configuration steps" className="sticky top-16 z-20 -mx-4 mt-4 border-b border-line bg-ivory/95 px-4 backdrop-blur lg:top-[72px] lg:mx-0 lg:px-0">
+          <nav aria-label="Configuration steps" className="sticky top-12 z-20 -mx-4 mt-4 border-b border-line bg-ivory/90 px-4 backdrop-blur-xl lg:mx-0 lg:px-0">
             <ol className="flex gap-1 overflow-x-auto py-3 [scrollbar-width:none]">
               {steps.map((st, i) => (
                 <li key={st.id} className="shrink-0">
                   <a
                     href={`#step-${st.id}`}
                     aria-current={active === st.id ? "step" : undefined}
-                    className={`block rounded-full px-3 py-1.5 text-sm transition-colors ${active === st.id ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"}`}
+                    className={`block rounded-full px-3 py-1.5 text-[0.82rem] transition-colors ${active === st.id ? "bg-ink text-white" : "text-muted hover:text-ink"}`}
                   >
                     <span className="tabular mr-1 text-xs opacity-60">{i + 1}</span>
                     {st.label}
@@ -192,9 +181,9 @@ export function Configurator() {
                         checked={draft.style === st.id}
                         onChange={() => set({ key: "style", value: st.id })}
                       />
-                      <span className="flex h-full flex-col border border-line bg-paper transition-[border-color,box-shadow] hover:border-line-strong peer-checked:border-ink peer-checked:shadow-[inset_0_0_0_1px_var(--color-ink)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-olive">
-                        <span className="block aspect-[4/5] bg-[#e8e0d2]">
-                          {hydrated && <DoorArt config={defaultConfig(st.id)} mode="mini" decorative className="h-full w-full" />}
+                      <span className="flex h-full flex-col overflow-hidden rounded-[14px] border border-line bg-paper transition-[border-color,box-shadow] hover:border-line-strong peer-checked:border-olive peer-checked:shadow-[inset_0_0_0_1px_var(--color-olive)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-olive">
+                        <span className="relative block aspect-[4/5] bg-stone">
+                          <Image src={PRODUCT_RENDERS[st.id].src} alt="" fill sizes="160px" className="object-cover" />
                         </span>
                         <span className="flex flex-col px-3 py-2.5">
                           <span className="text-[0.92rem]">{st.name}</span>
@@ -388,7 +377,7 @@ export function Configurator() {
                   </div>
                 ))}
               </dl>
-              <div className="border border-line bg-paper p-5">
+              <div className="rounded-[20px] bg-stone p-6">
                 <h3 className="eyebrow mb-4">Estimate per door</h3>
                 <PriceBreakdown estimate={est} />
                 <div className="mt-5 flex items-baseline justify-between border-t border-ink pt-3">
@@ -444,12 +433,24 @@ export function Configurator() {
   );
 }
 
+const STEP_PROMPTS: Record<string, string> = {
+  style: "Which one is right for you?",
+  size: "Made to your opening.",
+  core: "What's inside matters.",
+  finish: "Choose the surface you'll see every day.",
+  glass: "How much light should pass?",
+  hardware: "The part you'll touch most.",
+  fitting: "How it hangs in your home.",
+  review: "Check everything before you add it.",
+};
+
 function Step({ id, n, title, children }: { id: string; n: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={`step-${id}`} aria-labelledby={`step-${id}-title`} data-step={id} className="flex scroll-mt-36 flex-col gap-6 border-b border-line py-10 last:border-b-0">
-      <h2 id={`step-${id}-title`} className="flex items-baseline gap-3">
-        <span className="tabular text-sm text-brass">{n}</span>
-        <span className="font-display text-display-s">{title}</span>
+    <section id={`step-${id}`} aria-labelledby={`step-${id}-title`} data-step={id} className="flex scroll-mt-28 flex-col gap-6 border-b border-line py-12 last:border-b-0">
+      <h2 id={`step-${id}-title`} className="text-[1.6rem] font-semibold leading-tight tracking-[-0.025em]">
+        <span className="sr-only">Step {Number(n)}: </span>
+        {title}.{" "}
+        <span className="text-muted">{STEP_PROMPTS[id]}</span>
       </h2>
       {children}
     </section>

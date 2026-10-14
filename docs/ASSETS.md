@@ -1,12 +1,14 @@
 # Image assets
 
-No real photography was supplied, so every image slot currently holds a **generated placeholder**: an art-directed illustration rendered from code (`scripts/placeholders/`). They are intentionally cohesive and on-brand, but they are not photographs of Threshold products and must be replaced before launch.
+No real photography was supplied. Product, hero and close-up images are **3D renders** of each design's real standard specification, produced by the site's own 3D engine (`npm run renders`). They are accurate to the configuration and fine to launch with, and the footer states that product images are renders. The two visualiser sample rooms are still generated placeholder illustrations (`scripts/placeholders/`).
+
+Photography of installed doors will still lift the site further — the shot list below says what to photograph for each slot.
 
 List the outstanding slots at any time:
 
 ```bash
-npm run assets:check            # list placeholders
-npm run assets:check -- --strict  # exit non-zero if any remain (use in CI before launch)
+npm run assets:check            # list placeholders and renders
+npm run assets:check -- --strict  # exit non-zero if placeholders remain
 ```
 
 ## How to replace an image
@@ -30,7 +32,13 @@ npm run assets:check -- --strict  # exit non-zero if any remain (use in CI befor
 
 The homepage "See it in your space" section positions a door over `sample-room-hallway` using fixed percentages (`src/components/home/visualiser-feature.tsx`); update them if that image changes.
 
-## Regenerating placeholders
+## Regenerating renders and placeholders
+
+```bash
+npm run renders                 # all 3D renders (hero, products, close-ups)
+npm run renders -- product      # only product shots
+```
+
 
 ```bash
 npm run placeholders            # all

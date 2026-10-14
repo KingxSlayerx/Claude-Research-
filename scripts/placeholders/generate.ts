@@ -238,6 +238,9 @@ for (const [id, o] of Object.entries(productSettings) as [StyleId, Partial<Scene
   shots.push({ name: `door-${id}`, px: [1200, 1500], svg: () => vignette(cfg(id), o) });
 }
 
+/** Only the visualiser sample rooms are still used; other shots are kept for reference. */
+const IN_USE = /^sample-room-/;
+
 async function main() {
   const filter = process.argv[2];
   fs.mkdirSync(OUT, { recursive: true });
@@ -246,6 +249,7 @@ async function main() {
   });
   const page = await browser.newPage();
   for (const shot of shots) {
+    if (!IN_USE.test(shot.name)) continue;
     if (filter && !shot.name.includes(filter)) continue;
     const [w, h] = shot.px;
     await page.setViewportSize({ width: w, height: h });

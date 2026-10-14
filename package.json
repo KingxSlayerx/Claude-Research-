@@ -13,15 +13,18 @@
     "placeholders": "tsx scripts/placeholders/generate.ts",
     "check": "npm run typecheck && npm run lint && npm run test",
     "hash-password": "tsx scripts/hash-password.ts",
-    "assets:check": "tsx scripts/assets-check.ts"
+    "assets:check": "tsx scripts/assets-check.ts",
+    "renders": "tsx --tsconfig tsconfig.json scripts/renders/generate.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.3",
+    "@types/three": "^0.186.0",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",
+    "three": "^0.186.1",
     "zod": "^4.6.7",
     "zustand": "^5.0.15"
   },

@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
 
 const control =
-  "w-full border bg-paper px-4 py-3 text-[1rem] text-ink outline-none transition-colors placeholder:text-muted/70 focus:border-ink aria-[invalid=true]:border-error";
+  "w-full rounded-[12px] border bg-paper px-4 py-3 text-[1rem] text-ink outline-none transition-colors placeholder:text-muted/70 focus:border-olive aria-[invalid=true]:border-error";
 
 export function Field({
   id,

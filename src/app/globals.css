@@ -1,48 +1,55 @@
 @import "tailwindcss";
 
 /*
- * Threshold design tokens.
- * Warm ivory grounds, charcoal ink, natural timber tones, a restrained
- * olive accent and brushed brass for small details.
+ * Threshold design tokens (v2).
+ * Product-first: white and warm-grey stages, near-black hero sections,
+ * crisp tight-tracked Inter, a deep forest accent and brass for details.
+ * Token names are kept stable so every component inherits the new system.
  */
 @theme {
-  --color-ivory: #f4efe6;
-  --color-paper: #fbf9f4;
-  --color-stone: #ebe4d8;
-  --color-sand: #ddd3c3;
-  --color-line: #d6cdbd;
-  --color-line-strong: #b9ae9b;
-  --color-ink: #1d1b18;
-  --color-ink-soft: #3f3b35;
-  --color-muted: #6a645a;
+  --color-ivory: #fbfaf8; /* page */
+  --color-paper: #ffffff; /* raised surfaces */
+  --color-stone: #f3f1ed; /* tiles */
+  --color-sand: #e6e2db;
+  --color-line: #e3dfd8;
+  --color-line-strong: #c9c3b9;
+  --color-ink: #1d1d1f;
+  --color-ink-soft: #3c3b3a;
+  --color-muted: #6e6a64;
+  --color-night: #0d0c0b; /* dark stages */
+  --color-night-soft: #1b1917;
   --color-oak: #b48a5a;
   --color-teak: #8a5a2e;
   --color-walnut: #4f3424;
-  --color-olive: #46523a;
-  --color-olive-deep: #343e2b;
-  --color-olive-soft: #e2e4d4;
-  --color-brass: #7d5f2c; /* text-safe on ivory and paper (≥4.5:1) */
+  --color-olive: #2f5d50; /* accent: forest */
+  --color-olive-deep: #234a3f;
+  --color-olive-soft: #e3ece8;
+  --color-brass: #7d5f2c; /* text-safe on light grounds (≥4.5:1) */
   --color-brass-metal: #b08a4f;
-  --color-brass-light: #c9a86b;
-  --color-error: #9e3528;
-  --color-error-soft: #f6e3de;
-  --color-warn-soft: #f2e7d3;
+  --color-brass-light: #d5b37a;
+  --color-error: #b3261e;
+  --color-error-soft: #fbeceb;
+  --color-warn-soft: #f6efe2;
 
-  --font-display: var(--font-instrument), "Times New Roman", serif;
-  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  --text-display-xl: clamp(3.1rem, 7.4vw, 7.25rem);
-  --text-display-xl--line-height: 0.98;
-  --text-display-l: clamp(2.5rem, 5.2vw, 4.75rem);
-  --text-display-l--line-height: 1.02;
-  --text-display-m: clamp(2rem, 3.6vw, 3.25rem);
-  --text-display-m--line-height: 1.05;
-  --text-display-s: clamp(1.6rem, 2.4vw, 2.1rem);
-  --text-display-s--line-height: 1.1;
+  --text-display-xl: clamp(3rem, 7vw, 6rem);
+  --text-display-xl--line-height: 1.02;
+  --text-display-l: clamp(2.4rem, 5vw, 4rem);
+  --text-display-l--line-height: 1.05;
+  --text-display-m: clamp(1.9rem, 3.4vw, 3rem);
+  --text-display-m--line-height: 1.08;
+  --text-display-s: clamp(1.45rem, 2.2vw, 1.9rem);
+  --text-display-s--line-height: 1.14;
+  --text-lede: clamp(1.15rem, 1.6vw, 1.5rem);
+  --text-lede--line-height: 1.38;
 
-  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --shadow-soft: 0 1px 2px rgb(29 27 24 / 0.05), 0 8px 24px -12px rgb(29 27 24 / 0.18);
-  --shadow-lift: 0 2px 4px rgb(29 27 24 / 0.06), 0 22px 48px -24px rgb(29 27 24 / 0.32);
+  --radius-tile: 28px;
+  --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-apple: cubic-bezier(0.28, 0.11, 0.32, 1);
+  --shadow-soft: 0 2px 12px rgb(0 0 0 / 0.06);
+  --shadow-lift: 0 12px 40px -12px rgb(0 0 0 / 0.22);
 }
 
 :root {
@@ -63,12 +70,14 @@
     background: var(--color-ivory);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    letter-spacing: -0.011em;
+    font-optical-sizing: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: "ss01";
+    font-feature-settings: "cv11", "ss03";
   }
   h1,
   h2,
@@ -80,7 +89,7 @@
     text-wrap: pretty;
   }
   ::selection {
-    background: var(--color-olive-soft);
+    background: #cfe3db;
     color: var(--color-ink);
   }
   :focus-visible {
@@ -96,15 +105,49 @@
 @layer components {
   .font-display {
     font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: -0.01em;
+    font-weight: 650;
+    letter-spacing: -0.028em;
   }
   .eyebrow {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     color: var(--color-muted);
+  }
+  .eyebrow-accent {
+    font-size: clamp(1rem, 1.4vw, 1.3rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-brass);
+  }
+  .chevron-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+    color: var(--color-olive);
+    font-weight: 500;
+  }
+  .chevron-link::after {
+    content: "›";
+    font-size: 1.25em;
+    line-height: 1;
+    transform: translateY(-0.04em);
+    transition: transform 0.3s var(--ease-apple);
+  }
+  .chevron-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .chevron-link:hover::after {
+    transform: translate(2px, -0.04em);
+  }
+  .on-dark .chevron-link {
+    color: #8fd0b8;
+  }
+  .tile {
+    border-radius: var(--radius-tile);
+    background: var(--color-stone);
+    overflow: hidden;
   }
   .tabular {
     font-variant-numeric: tabular-nums;

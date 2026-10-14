@@ -34,7 +34,7 @@ export function DimensionInput({ kind, value, onCommit }: { kind: "w" | "h"; val
       <label htmlFor={id} className="text-sm font-medium">
         {kind === "w" ? "Width" : "Height"}
       </label>
-      <div className="flex items-center border border-line bg-paper focus-within:border-ink">
+      <div className="flex items-center rounded-[14px] border border-line bg-paper focus-within:border-olive">
         <input
           id={id}
           inputMode="numeric"

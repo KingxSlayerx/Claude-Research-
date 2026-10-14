@@ -125,7 +125,7 @@ export function QuotePage() {
       </header>
 
       {items.length === 0 ? (
-        <div className="flex flex-col items-start gap-5 border border-dashed border-line-strong px-6 py-14 sm:px-12">
+        <div className="tile flex flex-col items-start gap-5 px-6 py-14 sm:px-12">
           <h2 className="font-display text-display-s">Your quote is empty.</h2>
           <p className="max-w-[52ch] text-ink-soft">Design a door and choose &ldquo;Add to quote&rdquo;. Add one line per door type, with the quantity you need.</p>
           <div className="flex flex-wrap gap-3">
@@ -150,7 +150,7 @@ export function QuotePage() {
           </section>
 
           <section aria-labelledby="summary-title" className="flex flex-col gap-10 lg:col-span-5">
-            <div className="border border-line bg-paper p-6 sm:p-8">
+            <div className="rounded-[24px] bg-stone p-6 sm:p-8">
               <h2 id="summary-title" className="eyebrow mb-5">
                 Estimate summary
               </h2>
@@ -278,7 +278,7 @@ export function QuotePage() {
               </div>
 
               {status.state === "error" && (
-                <div ref={errorRef} tabIndex={-1} role="alert" className="flex flex-col gap-3 border-l-2 border-error bg-error-soft p-4 text-sm outline-none">
+                <div ref={errorRef} tabIndex={-1} role="alert" className="flex flex-col gap-3 rounded-[14px] bg-error-soft p-4 text-sm outline-none">
                   <p className="font-semibold">Your request was not sent.</p>
                   <p>{status.result.message}</p>
                   {status.result.kind !== "validation" && wa && (
@@ -371,7 +371,7 @@ function Confirmation({ receipt, onNew }: { receipt: SubmissionReceipt & { text:
             </li>
           ))}
         </ol>
-        <details className="border border-line bg-paper p-5">
+        <details className="rounded-[20px] bg-stone p-5">
           <summary className="cursor-pointer text-sm font-medium">Request summary</summary>
           <pre ref={preRef} className="mt-4 whitespace-pre-wrap font-sans text-[0.82rem] leading-relaxed text-ink-soft">
             {receipt.text}

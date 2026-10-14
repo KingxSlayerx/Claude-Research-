@@ -2,19 +2,19 @@ import { Approach } from "@/components/home/approach";
 import { Collections } from "@/components/home/collections";
 import { Featured } from "@/components/home/featured";
 import { FinalCta } from "@/components/home/final-cta";
-import { Hero } from "@/components/home/hero";
-import { MakeItYours } from "@/components/home/make-it-yours";
+import { FinishStudio } from "@/components/home/finish-studio";
+import { HeroScene } from "@/components/home/hero-scene";
 import { Materials } from "@/components/home/materials";
 import { VisualiserFeature } from "@/components/home/visualiser-feature";
 
 export default function HomePage() {
   return (
     <>
-      <Hero />
+      <HeroScene />
+      <FinishStudio />
       <Collections />
       <Featured />
       <Materials />
-      <MakeItYours />
       <VisualiserFeature />
       <Approach />
       <FinalCta />

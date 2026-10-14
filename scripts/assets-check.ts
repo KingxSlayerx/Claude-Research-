@@ -1,11 +1,11 @@
-/** Lists image slots still using placeholder artwork. Exits non-zero with --strict. */
+/** Lists image slots that still use placeholders or renders. Exits non-zero with --strict if placeholders remain. */
 import { allAssets } from "../src/content/assets";
 
-const pending = allAssets().filter((a) => a.status === "placeholder");
-if (!pending.length) {
-  console.log("All image slots use final photography.");
-} else {
-  console.log(`${pending.length} image slot(s) still use placeholders:\n`);
-  for (const a of pending) console.log(`- ${a.src}\n    ${a.brief}`);
-}
-if (process.argv.includes("--strict") && pending.length) process.exit(1);
+const assets = allAssets();
+const placeholders = assets.filter((a) => a.status === "placeholder");
+const renders = assets.filter((a) => a.status === "render");
+console.log(`${placeholders.length} placeholder illustration(s) — replace before launch:`);
+for (const a of placeholders) console.log(`- ${a.src}\n    ${a.brief}`);
+console.log(`\n${renders.length} 3D render(s) — fine to launch with; replace with photography when available:`);
+for (const a of renders) console.log(`- ${a.src}\n    ${a.brief}`);
+if (process.argv.includes("--strict") && placeholders.length) process.exit(1);

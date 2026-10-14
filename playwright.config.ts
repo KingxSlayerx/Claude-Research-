@@ -5,6 +5,9 @@ import { randomBytes, scryptSync } from "node:crypto";
 const PORT = 3100;
 const executablePath = process.env.CHROMIUM_PATH ?? (process.env.CI ? undefined : "/opt/pw-browsers/chromium-1194/chrome-linux/chrome");
 
+const NO_WEBGL = ["--disable-webgl", "--disable-3d-apis"];
+const SWIFTSHADER = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"];
+
 /** Throwaway staff account for the e2e server only. */
 export const E2E_STAFF = { email: "e2e-staff@example.com", password: "e2e staff password 123" };
 
@@ -24,11 +27,14 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}`,
     trace: "retain-on-failure",
-    launchOptions: executablePath ? { executablePath } : undefined,
   },
   projects: [
-    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },
-    { name: "mobile", use: { ...devices["Pixel 7"] }, grep: /@mobile/ },
+    // Journeys run without WebGL: CI browsers render 3D in software, which is slow, and this
+    // exercises the 2D fallback every customer without WebGL gets.
+    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 }, launchOptions: { executablePath, args: NO_WEBGL } }, grepInvert: /@webgl/ },
+    { name: "mobile", use: { ...devices["Pixel 7"], launchOptions: { executablePath, args: NO_WEBGL } }, grep: /@mobile/, grepInvert: /@webgl/ },
+    // The live 3D views, rendered with SwiftShader.
+    { name: "webgl", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 }, launchOptions: { executablePath, args: SWIFTSHADER } }, grep: /@webgl/, timeout: 240_000 },
   ],
   webServer: {
     command: `npm run build && npx next start -p ${PORT}`,

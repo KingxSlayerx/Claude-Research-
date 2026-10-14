@@ -10,7 +10,7 @@ test.describe("homepage and catalogue", () => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(/An entrance worth coming home\s+to\./);
     await expect(page.getByText("Thoughtfully crafted doors, made to belong to your space.")).toBeVisible();
-    for (const id of ["collections", "materials", "approach"]) await expect(page.locator(`#${id}`)).toHaveCount(1);
+    for (const id of ["collections", "craft", "approach"]) await expect(page.locator(`#${id}`)).toHaveCount(1);
     await expectNoHorizontalOverflow(page);
     await page.getByRole("link", { name: /Explore the collection/ }).first().click();
     await expect(page).toHaveURL(/\/doors$/);
@@ -26,7 +26,7 @@ test.describe("homepage and catalogue", () => {
     await page.keyboard.press("Escape");
     await expect(menu).toBeHidden();
     await page.getByRole("button", { name: "Open menu" }).click();
-    await menu.getByRole("link", { name: "Explore doors" }).click();
+    await menu.getByRole("link", { name: "Doors", exact: true }).click();
     await expect(page).toHaveURL(/\/doors$/);
     await expect(menu).toBeHidden();
   });

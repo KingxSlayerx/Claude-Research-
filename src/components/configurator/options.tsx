@@ -34,7 +34,7 @@ export function OptionGroup<V extends string | number>({
   const grid = columns === 1 ? "grid-cols-1" : columns === 2 ? "grid-cols-1 min-[420px]:grid-cols-2" : "grid-cols-2 sm:grid-cols-3";
   return (
     <fieldset className="flex min-w-0 flex-col gap-3">
-      <legend className={hideLegend ? "sr-only" : "mb-3 text-sm font-medium text-ink"}>{legend}</legend>
+      <legend className={hideLegend ? "sr-only" : "mb-3 text-[0.95rem] font-semibold text-ink"}>{legend}</legend>
       <div className={`grid gap-2 ${grid}`}>
         {options.map((o) => (
           <label key={String(o.value)} className={`relative ${o.disabled ? "opacity-50" : "cursor-pointer"}`}>
@@ -47,7 +47,7 @@ export function OptionGroup<V extends string | number>({
               disabled={o.disabled}
               onChange={() => onChange(o.value)}
             />
-            <span className="flex h-full flex-col gap-0.5 border border-line bg-paper px-4 py-3 transition-[border-color,background-color,box-shadow] duration-200 hover:border-line-strong peer-checked:border-ink peer-checked:shadow-[inset_0_0_0_1px_var(--color-ink)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-olive">
+            <span className="flex h-full flex-col gap-0.5 rounded-[14px] border border-line bg-paper px-4 py-3.5 transition-[border-color,background-color,box-shadow] duration-200 hover:border-line-strong peer-checked:border-olive peer-checked:shadow-[inset_0_0_0_1px_var(--color-olive)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-olive">
               <span className="flex items-baseline justify-between gap-3">
                 <span className="text-[0.95rem] text-ink">{o.label}</span>
                 {o.detail != null && <span className="tabular shrink-0 text-sm text-muted">{o.detail}</span>}
@@ -86,7 +86,7 @@ export function SwatchGroup({
   return (
     <fieldset className="flex min-w-0 flex-col gap-3">
       <legend className="mb-3 flex w-full justify-between text-sm">
-        <span className="font-medium text-ink">{legend}</span>
+        <span className="text-[0.95rem] font-semibold text-ink">{legend}</span>
         <span className="text-muted" aria-hidden="true">
           {current?.label}
         </span>
@@ -97,7 +97,7 @@ export function SwatchGroup({
             <input type="radio" className="peer sr-only" name={name} value={s.value} checked={s.value === value} onChange={() => onChange(s.value)} />
             <span
               aria-hidden="true"
-              className="block h-12 w-12 rounded-full border border-black/15 shadow-[inset_0_-6px_10px_rgba(0,0,0,.12)] ring-offset-[3px] ring-offset-ivory transition-shadow peer-checked:ring-[1.5px] peer-checked:ring-ink peer-focus-visible:ring-2 peer-focus-visible:ring-olive"
+              className="block h-12 w-12 rounded-full border border-black/10 shadow-[inset_0_-6px_10px_rgba(0,0,0,.12)] ring-offset-[3px] ring-offset-ivory transition-shadow peer-checked:ring-2 peer-checked:ring-olive peer-focus-visible:ring-2 peer-focus-visible:ring-olive"
               style={{
                 backgroundColor: s.hex,
                 backgroundImage: s.grain ? "repeating-linear-gradient(95deg, transparent 0 5px, rgba(0,0,0,.12) 5px 7px)" : undefined,
@@ -116,7 +116,7 @@ export function SwatchGroup({
 
 export function Toggle({ checked, onChange, label, detail }: { checked: boolean; onChange: (v: boolean) => void; label: string; detail?: string }) {
   return (
-    <label className="flex cursor-pointer items-center justify-between gap-4 border border-line bg-paper px-4 py-3">
+    <label className="flex cursor-pointer items-center justify-between gap-4 rounded-[14px] border border-line bg-paper px-4 py-3.5">
       <span className="flex flex-col">
         <span className="text-[0.95rem]">{label}</span>
         {detail && <span className="tabular text-sm text-muted">{detail}</span>}
@@ -149,11 +149,11 @@ export function QtyStepper({ value, onChange, label = "Quantity", size = "md" }:
 
 export function AdviceNote({ title, message, actionLabel, onAction }: { title: string; message: string; actionLabel: string; onAction: () => void }) {
   return (
-    <div role="note" className="flex flex-wrap items-center justify-between gap-3 border-l-2 border-brass bg-warn-soft px-4 py-3 text-sm">
+    <div role="note" className="flex flex-wrap items-center justify-between gap-3 rounded-[14px] bg-warn-soft px-4 py-3 text-sm">
       <p>
         <span className="font-semibold">{title}:</span> {message}
       </p>
-      <button type="button" onClick={onAction} className="rounded-full border border-ink/60 px-3 py-1 text-[0.8rem] hover:bg-ink hover:text-paper">
+      <button type="button" onClick={onAction} className="rounded-full bg-olive px-3 py-1 text-[0.8rem] text-white hover:bg-olive-deep">
         {actionLabel}
       </button>
     </div>

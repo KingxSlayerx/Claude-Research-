@@ -1,61 +1,65 @@
 import Image from "next/image";
 import Link from "next/link";
-import { COLLECTIONS, STYLES } from "@/domain/catalog";
-import { COLLECTION_IMAGES } from "@/content/assets";
-import { Container, SectionHeading } from "@/components/ui/layout";
-import { ArrowIcon } from "@/components/ui/button";
+import { COLLECTIONS, STYLES, type CollectionId, type StyleId } from "@/domain/catalog";
+import { startingPrice } from "@/domain/pricing";
+import { inr } from "@/domain/format";
+import { PRODUCT_RENDERS } from "@/content/assets";
+
+/** Which design represents each collection in the bento grid. */
+const HERO_STYLE: Record<CollectionId, StyleId> = {
+  entrance: "main",
+  panelled: "panel4",
+  contemporary: "grooved",
+  "light-air": "glass",
+  "space-saving": "barn",
+};
 
 export function Collections() {
+  const fromFor = (id: CollectionId) => Math.min(...STYLES.filter((s) => s.collections.includes(id)).map(startingPrice));
   return (
-    <section id="collections" aria-labelledby="collections-title" className="scroll-mt-20 py-24 lg:py-36">
-      <Container>
-        <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-          <SectionHeading
-            id="collections-title"
-            eyebrow="Collections"
-            title="Five ways into a room."
-            intro="Nine designs, grouped by the character they bring — from substantial entrances to doors that simply slide out of the way."
-          />
-          <Link href="/doors" className="link-underline shrink-0 self-start pb-1 text-[0.95rem] lg:self-end">
-            View all nine designs
-          </Link>
-        </div>
+    <section id="collections" aria-labelledby="collections-title" className="scroll-mt-12 bg-paper py-24 lg:py-32">
+      <div className="mx-auto max-w-[1100px] px-6 text-center">
+        <p className="eyebrow-accent">Collections</p>
+        <h2 id="collections-title" className="font-display mt-2 text-display-l">
+          Five ways into a room.
+        </h2>
+        <p className="mx-auto mt-4 max-w-[48ch] text-lede text-muted">Nine designs, from substantial entrances to doors that simply slide out of the way.</p>
+      </div>
 
-        <ul className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-20 lg:grid-cols-6 lg:gap-5">
-          {COLLECTIONS.map((c, i) => {
-            const count = STYLES.filter((s) => s.collections.includes(c.id)).length;
-            const img = COLLECTION_IMAGES[c.id];
-            const layout = i < 2 ? "lg:col-span-3 lg:aspect-[5/4]" : "lg:col-span-2 lg:aspect-[4/5]";
-            return (
-              <li key={c.id} className={`reveal ${i === 0 ? "sm:col-span-2" : ""} ${layout}`}>
-                <Link
-                  href={`/doors?collection=${c.id}`}
-                  className="group relative flex aspect-[4/5] h-full w-full overflow-hidden bg-stone sm:aspect-auto sm:min-h-[420px] lg:min-h-0"
-                >
+      <ul className="mx-auto mt-14 grid max-w-[1240px] gap-4 px-4 sm:px-6 md:grid-cols-2 lg:grid-cols-6">
+        {COLLECTIONS.map((c, i) => {
+          const img = PRODUCT_RENDERS[HERO_STYLE[c.id]];
+          const count = STYLES.filter((s) => s.collections.includes(c.id)).length;
+          const span = i < 2 ? "lg:col-span-3" : "lg:col-span-2";
+          const dark = i === 0;
+          return (
+            <li key={c.id} className={`reveal ${span}`}>
+              <article className={`tile group relative flex h-full flex-col ${dark ? "on-dark !bg-night text-white" : ""}`}>
+                <div className="relative z-10 flex flex-col items-center px-6 pt-10 text-center">
+                  <p className={`eyebrow ${dark ? "!text-white/60" : ""}`}>{count === 1 ? "1 design" : `${count} designs`}</p>
+                  <h3 className="font-display mt-1 text-[clamp(1.6rem,2.6vw,2.2rem)] leading-tight">{c.label}</h3>
+                  <p className={`mt-2 max-w-[30ch] text-[0.95rem] ${dark ? "text-white/70" : "text-muted"}`}>{c.description}</p>
+                  <p className={`tabular mt-2 text-sm ${dark ? "text-white/60" : "text-muted"}`}>From {inr(fromFor(c.id))}</p>
+                  <div className="mt-4 flex gap-6 text-[0.95rem]">
+                    <Link href={`/doors?collection=${c.id}`} className="chevron-link">
+                      Explore<span className="sr-only"> {c.label}</span>
+                    </Link>
+                  </div>
+                </div>
+                <div className={`relative mt-6 overflow-hidden ${i < 2 ? "aspect-[5/4]" : "aspect-[4/5]"}`}>
                   <Image
                     src={img.src}
-                    alt=""
+                    alt={img.alt}
                     fill
-                    sizes="(min-width: 1024px) 50vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-soft)] group-hover:scale-[1.035]"
+                    sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
+                    className={`object-cover object-[50%_30%] transition-transform duration-[1400ms] ease-[var(--ease-apple)] group-hover:scale-[1.03] ${dark ? "opacity-95" : ""}`}
                   />
-                  <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(20,15,10,.62)_100%)]" />
-                  <span className="relative mt-auto flex w-full items-end justify-between gap-4 p-6 text-paper lg:p-8">
-                    <span>
-                      <span className="eyebrow block !text-paper/75">{count} {count === 1 ? "design" : "designs"}</span>
-                      <span className="font-display mt-2 block text-[2.2rem] leading-none lg:text-[2.6rem]">{c.label}</span>
-                      <span className="mt-3 block max-w-[34ch] text-[0.95rem] text-paper/85">{c.description}</span>
-                    </span>
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-paper/60 transition-colors group-hover:bg-paper group-hover:text-ink">
-                      <ArrowIcon />
-                    </span>
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </Container>
+                </div>
+              </article>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }

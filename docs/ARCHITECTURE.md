@@ -21,7 +21,8 @@ src/
     pricing.ts       priceDoor / startingPrice / quoteTotals
     summary.ts       Text summary and spec rows
     quote.ts         Customer + submission schemas, phone rules, record types
-  render/door-svg.ts Door illustration (SVG string; used in UI and image generation)
+  render/door-svg.ts Door elevation drawing (SVG; dimensioned view, 2D fallback, visualiser overlay)
+  render3d/        Real-time 3D door (three.js): construction per style, PBR materials, lit stage
   state/           Client store (draft, quote items, contact form), hydration helpers
   lib/
     quote-client.ts  Browser → API client with typed failure kinds
@@ -69,6 +70,15 @@ See `supabase/migrations/0001_threshold_quotes.sql`.
 - **Staff** sign in at `/admin/login`. Supabase Auth checks the password; the user must be an active row in `staff_members`. The server then issues its own HMAC-signed, HttpOnly, `SameSite=Strict` session cookie (8 hours). Every admin API call re-verifies the cookie and, in Supabase mode, re-checks that the staff member is still active, so deactivation is immediate.
 - **CSRF:** state-changing endpoints require a same-origin `Origin` header; the session cookie is `SameSite=Strict`.
 - **Abuse:** per-IP rate limits on submissions (8 per 10 min) and sign-in (per IP and per email); a honeypot field; body size limits. The in-memory limiter protects a single instance — add platform rate limiting in front for multi-instance hosting (see DEPLOYMENT.md).
+
+## 3D rendering
+
+`src/render3d/` builds each door the way it is made — stiles and rails around recessed or raised panels, V-grooves, louvre slats, glazing with beads, frames, architraves and hardware — from the same `DoorConfig` used for pricing, so the 3D view always matches the estimate. Materials are physically based (procedural wood grain, paint, laminate, glass, metals); the stage adds a wall with a real opening, a warm room beyond, a raking key light (with a projected jaali pattern in the hero) and contact shadows.
+
+- **Where it's used:** the scroll-driven homepage hero (the door opens as you scroll), the homepage finish picker, the product page "Turn it around" viewer and the configurator preview (drag to rotate, open/close).
+- **Performance:** three.js is loaded on demand only on pages that show a canvas; the stage renders only when something changes (no idle loop); pixel ratio is capped; canvases below the fold initialise when they approach the viewport.
+- **Fallbacks:** every 3D view sits on top of a pre-rendered still, so content is visible immediately. Without WebGL (or with reduced motion in the hero) the stills and the 2D drawing remain, fully functional.
+- **Pre-rendered imagery:** `npm run renders` renders the hero, product and close-up images from the same engine in headless Chromium (`scripts/renders/`). Re-run it after changing a style or material.
 
 ## Visualiser boundary
 
