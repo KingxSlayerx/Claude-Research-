@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Threshold — doors & interiors, Hyderabad
 
-## Getting Started
+The website, door configurator, quote journey and showroom inbox for Threshold. It replaces the original single-file `Threshold Door Studio.html` (kept in `legacy/` for reference) with a maintainable Next.js application.
 
-First, run the development server:
+## What's here
+
+- **Homepage** — hero, collections, featured designs, materials, a live "make it yours" configurator teaser, the visualiser, the measure-make-fit process and a closing call to action.
+- **Catalogue** (`/doors`) — the nine original designs, filterable by room and collection, each with a product page showing its standard specification and what the starting price includes.
+- **Configurator** (`/design`) — every option from the original (size, core, thickness, finish, colour, glass, handle, hardware finish, lock, frame, architrave, hinges, handing, installation, quantity) with a live preview and itemised estimate.
+- **Visualiser** (`/visualise`) — place your design on a photo of your doorway or a sample room. Photos never leave the device.
+- **Quote** (`/quote`) — multi-door quote with edit / duplicate / remove, GST, a validated contact form and a confirmed reference number.
+- **Showroom inbox** (`/admin`) — staff sign-in, search, status filters, request detail, call / WhatsApp / email actions, status changes and notes with full history.
+
+## Quick start
 
 ```bash
+npm install
+cp .env.example .env.local
+npm run hash-password -- 'a long local passphrase'   # paste into STAFF_PASSWORD_HASH, set STAFF_EMAIL
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. Staff sign in at http://localhost:3000/admin/login. In development, quote requests are stored in `.data/quotes.json`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Does |
+| --- | --- |
+| `npm run dev` | Development server |
+| `npm run build` / `npm start` | Production build / server |
+| `npm run typecheck` · `npm run lint` | TypeScript and ESLint |
+| `npm test` | Unit and API integration tests (pricing parity with the original, rules, validation, auth, storage) |
+| `npm run test:e2e` | Playwright journeys on desktop and mobile, plus axe accessibility scans |
+| `npm run placeholders` | Regenerate placeholder imagery |
+| `npm run assets:check` | List image slots still awaiting real photography |
+| `npm run hash-password -- '<pw>'` | Hash for the file-store staff account |
 
-## Learn More
+## Documentation
 
-To learn more about Next.js, take a look at the following resources:
+- [docs/AUDIT.md](docs/AUDIT.md) — what the original did, bugs and security issues found, how each was resolved
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — stack choices and trade-offs, layers, routes, data and access model
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — Supabase + Vercel setup, environment variables, checks
+- [docs/PRICING-REVIEW.md](docs/PRICING-REVIEW.md) — pricing assumptions and copy that need business approval
+- [docs/ASSETS.md](docs/ASSETS.md) — photography shot list and how to replace placeholders
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Before launch
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Approve or correct the items in `docs/PRICING-REVIEW.md`.
+2. Replace placeholder imagery (`npm run assets:check`).
+3. Set verified contact details and the WhatsApp number (`.env.example`).
+4. Complete the Supabase and Vercel setup in `docs/DEPLOYMENT.md` and run its checklist.
