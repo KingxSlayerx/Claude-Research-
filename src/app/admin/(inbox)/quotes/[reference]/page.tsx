@@ -1,9 +1,11 @@
-"use client";
+import type { Metadata } from "next";
+import { QuoteDetailRoute } from "@/components/admin/quote-detail-route";
 
-import { useParams } from "next/navigation";
-import { QuoteDetail } from "@/components/admin/quote-detail";
+export const metadata: Metadata = { title: "Request" };
+
+// Rendered only after the client-side session check, so there is no static shell to validate.
+export const instant = false;
 
 export default function AdminQuotePage() {
-  const { reference } = useParams<{ reference: string }>();
-  return <QuoteDetail key={reference} reference={reference} />;
+  return <QuoteDetailRoute />;
 }

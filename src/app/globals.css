@@ -21,7 +21,8 @@
   --color-olive: #46523a;
   --color-olive-deep: #343e2b;
   --color-olive-soft: #e2e4d4;
-  --color-brass: #9c7a43;
+  --color-brass: #7d5f2c; /* text-safe on ivory and paper (≥4.5:1) */
+  --color-brass-metal: #b08a4f;
   --color-brass-light: #c9a86b;
   --color-error: #9e3528;
   --color-error-soft: #f6e3de;
