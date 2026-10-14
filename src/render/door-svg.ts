@@ -58,7 +58,8 @@ let counter = 0;
 
 export function renderDoorSvg(c: DoorConfig, opts: DoorRenderOptions = {}): DoorRender {
   const { mode = "scene", dims = false, decorative = false } = opts;
-  const n = (opts.idPrefix ?? "d") + (++counter).toString(36);
+  // A caller-supplied prefix keeps ids identical between server and client renders.
+  const n = opts.idPrefix ? opts.idPrefix.replace(/[^a-zA-Z0-9_-]/g, "") : "d" + (++counter).toString(36);
   const s = getStyle(c.style);
   const W = c.w,
     H = c.h;
