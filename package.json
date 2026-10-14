@@ -11,7 +11,9 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "placeholders": "tsx scripts/placeholders/generate.ts",
-    "check": "npm run typecheck && npm run lint && npm run test"
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "hash-password": "tsx scripts/hash-password.ts",
+    "assets:check": "tsx scripts/assets-check.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -19,6 +21,7 @@
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
     "zod": "^4.6.7",
     "zustand": "^5.0.15"
   },

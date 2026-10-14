@@ -95,7 +95,7 @@ export function Header() {
         >
           {quoteLabel}
         </Link>
-        <Link href="/design" className={buttonClass("primary", "sm", "hidden sm:inline-flex")}>
+        <Link href="/design" className={buttonClass("primary", "sm", "max-sm:hidden")}>
           Design your door
         </Link>
         <button
