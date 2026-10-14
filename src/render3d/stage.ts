@@ -206,7 +206,7 @@ export function createStage(canvas: HTMLCanvasElement, opts: StageOptions): Door
     const wallT = 0.15;
     const span = 14;
     const x0 = -F;
-    const wallH = 6;
+    const wallH = 14;
     // One continuous wall with a cut-out, so there are no seams around the opening.
     const shape = new THREE.Shape();
     shape.moveTo(x0 - span, 0).lineTo(x0, 0).lineTo(x0, oh).lineTo(x0 + ow, oh).lineTo(x0 + ow, 0).lineTo(x0 + ow + span, 0).lineTo(x0 + ow + span, wallH).lineTo(x0 - span, wallH).lineTo(x0 - span, 0);
@@ -233,12 +233,12 @@ export function createStage(canvas: HTMLCanvasElement, opts: StageOptions): Door
     strip.position.set(W / 2, 0.002, 0.16);
     set.add(strip);
     // the room beyond: floor and a glowing back wall
-    const back = new THREE.Mesh(new THREE.PlaneGeometry(8, 6), beyondMat);
-    back.position.set(W / 2, 3, -3.2);
+    const back = new THREE.Mesh(new THREE.PlaneGeometry(8, 14), beyondMat);
+    back.position.set(W / 2, 7, -3.2);
     set.add(back);
-    const side = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 6), wallMat);
+    const side = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 14), wallMat);
     side.rotation.y = Math.PI / 2;
-    side.position.set(x0 - 0.6, 3, -1.75);
+    side.position.set(x0 - 0.6, 7, -1.75);
     set.add(side);
     beyondLight.position.set(W / 2, H * 0.6, -1.2);
   }
@@ -267,13 +267,13 @@ export function createStage(canvas: HTMLCanvasElement, opts: StageOptions): Door
     const fov = THREE.MathUtils.degToRad(camera.fov);
     const hero = opts.mode === "hero";
     const portrait = aspect < 0.9;
-    const needH = b.top * (hero ? (portrait ? 1.7 : 1.95) : opts.mode === "product" ? 1.42 : 1.26);
-    const needW = b.width * (hero ? (portrait ? 1.9 : 2.6) : 1.7);
+    const needH = b.top * (hero ? (portrait ? 3.3 : 2.5) : opts.mode === "product" ? 1.42 : 1.26);
+    const needW = b.width * (hero ? (portrait ? 1.2 : 2.6) : 1.7);
     const distH = needH / 2 / Math.tan(fov / 2);
     const distW = needW / 2 / Math.tan(fov / 2) / aspect;
     const dist = Math.max(distH, distW);
     // Hero: aim above the door so it sits in the lower half, under the headline.
-    baseTarget.set(c.style === "barn" ? W * 0.5 : W / 2, b.top * (hero ? (portrait ? 0.66 : 0.72) : opts.mode === "product" ? 0.52 : 0.49), 0);
+    baseTarget.set(c.style === "barn" ? W * 0.5 : W / 2, b.top * (hero ? (portrait ? 1.56 : 1.08) : opts.mode === "product" ? 0.52 : 0.49), 0);
     basePos.set(baseTarget.x + (hero ? 0 : dist * 0.18), baseTarget.y + (hero ? -0.1 : 0.05), dist);
     camera.position.copy(basePos);
     camera.lookAt(baseTarget);

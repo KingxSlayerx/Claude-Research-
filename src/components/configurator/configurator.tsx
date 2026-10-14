@@ -414,7 +414,7 @@ export function Configurator() {
             <span className="block whitespace-nowrap text-[0.7rem] text-muted">
               {draft.qty > 1 ? `${draft.qty} doors · before GST` : "Per door · before GST"}
             </span>
-            <span className="font-display text-[1.7rem] leading-none" data-testid="mobile-price">
+            <span className="font-display text-[1.3rem] leading-none" data-testid="mobile-price">
               {inr(est.unit * draft.qty)}
             </span>
           </p>

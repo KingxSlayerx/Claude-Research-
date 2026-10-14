@@ -86,7 +86,7 @@ export function HeroScene() {
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-night/70 to-transparent" />
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-night/80 to-transparent" />
 
-        <div className="relative z-10 mx-auto flex h-full max-w-[1100px] flex-col items-center px-6 pt-[11svh] text-center" style={{ opacity: headline, transform: `translateY(${-(1 - headline) * 40}px)` }}>
+        <div className="relative z-10 mx-auto flex h-full max-w-[1100px] flex-col items-center px-6 pt-[9svh] text-center" style={{ opacity: headline, transform: `translateY(${-(1 - headline) * 40}px)` }}>
           <p className="eyebrow-accent !text-brass-light">Threshold</p>
           <h1 id="hero-title" className="font-display mt-2 max-w-[16ch] text-[clamp(2.6rem,5.6vw,5rem)] leading-[1.04]">
             An entrance worth coming home to.

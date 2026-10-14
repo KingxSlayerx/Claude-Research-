@@ -7,7 +7,7 @@ import { defaultConfig } from "@/domain/config";
 import { CATEGORY_LABELS, priceDoor, startingPrice, type LineCategory } from "@/domain/pricing";
 import { specRows } from "@/domain/summary";
 import { inr } from "@/domain/format";
-import { PRODUCT_RENDERS } from "@/content/assets";
+import { PRODUCT_RENDERS, PRODUCT_WIDE_RENDERS } from "@/content/assets";
 import { LinkButton, ChevronLink } from "@/components/ui/button";
 import { ProductCard } from "@/components/catalog/product-card";
 import { ProductViewer } from "@/components/catalog/product-viewer";
@@ -38,6 +38,7 @@ export default async function DoorPage({ params }: { params: Promise<{ slug: str
   const cfg = defaultConfig(s.id);
   const est = priceDoor(cfg);
   const img = PRODUCT_RENDERS[s.id];
+  const wide = PRODUCT_WIDE_RENDERS[s.id];
   const rooms = s.rooms.map((r) => ROOMS.find((x) => x.id === r)!.label);
   const cols = s.collections.map((c) => COLLECTIONS.find((x) => x.id === c)!);
   const grouped = (Object.keys(CATEGORY_LABELS) as LineCategory[])
@@ -96,7 +97,8 @@ export default async function DoorPage({ params }: { params: Promise<{ slug: str
         </div>
         <div className="mx-auto mt-12 max-w-[1240px] px-4 sm:px-6">
           <div className="tile relative aspect-[4/5] sm:aspect-[16/10]">
-            <Image src={img.src} alt={img.alt} fill preload sizes="(min-width: 1240px) 1240px, 100vw" className="object-cover object-[50%_35%]" />
+            <Image src={img.src} alt={img.alt} fill preload sizes="(max-width: 639px) 100vw, 1px" className="object-cover sm:hidden" />
+            <Image src={wide.src} alt={wide.alt} fill preload sizes="(min-width: 1240px) 1240px, (min-width: 640px) 100vw, 1px" className="object-cover max-sm:hidden" />
           </div>
         </div>
       </section>
@@ -118,7 +120,7 @@ export default async function DoorPage({ params }: { params: Promise<{ slug: str
           <p className="mx-auto mt-3 max-w-[44ch] text-lede text-white/70">Drag to look at the {s.name} from any angle, then open it.</p>
         </div>
         <div className="mx-auto mt-10 max-w-[1240px] px-4 sm:px-6">
-          <ProductViewer styleId={s.id} poster={img.src} />
+          <ProductViewer styleId={s.id} poster={wide.src} />
         </div>
       </section>
 

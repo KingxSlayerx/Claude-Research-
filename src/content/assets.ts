@@ -50,6 +50,13 @@ export const PRODUCT_RENDERS: Record<StyleId, ImageAsset> = Object.fromEntries(
   ]),
 ) as Record<StyleId, ImageAsset>;
 
+export const PRODUCT_WIDE_RENDERS: Record<StyleId, ImageAsset> = Object.fromEntries(
+  (["flush", "shaker", "panel4", "grooved", "glass", "louvre", "main", "pivot", "barn"] as StyleId[]).map((id) => [
+    id,
+    rd(`product-wide-${id}`, 1920, 1200, `${getStyle(id).name} door in its standard specification, rendered in a plaster wall.`, "Landscape product photograph, installed, three-quarter view."),
+  ]),
+) as Record<StyleId, ImageAsset>;
+
 export const MACRO_RENDERS = {
   hardware: rd("macro-hardware", 1600, 1200, "Close-up of an antique brass lever and mortise lock on walnut veneer.", "Macro photograph of a lever on a finished door."),
   panel: rd("macro-panel", 1600, 1200, "Close-up of a raised panel's bevelled edge in teak veneer.", "Macro photograph of a raised panel edge."),
@@ -68,6 +75,7 @@ export function allAssets(): ImageAsset[] {
     HERO_RENDER_PORTRAIT,
     HERO_OPEN_RENDER,
     ...Object.values(PRODUCT_RENDERS),
+    ...Object.values(PRODUCT_WIDE_RENDERS),
     ...Object.values(MACRO_RENDERS),
     ...SAMPLE_ROOMS.map((s) => s.image),
   ];

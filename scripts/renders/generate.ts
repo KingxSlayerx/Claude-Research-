@@ -29,6 +29,7 @@ const shots: Shot[] = [
   { name: "hero-closed-portrait", size: [1080, 1700], cfg: { style: "pivot" }, mode: "hero" },
   { name: "hero-open", size: [2400, 1350], cfg: { style: "pivot" }, mode: "hero", open: 0.62 },
   ...STYLES.map((s) => ({ name: `product-${s.id}`, size: [1200, 1500] as [number, number], cfg: { style: s.id }, mode: "product" as const })),
+  ...STYLES.map((s) => ({ name: `product-wide-${s.id}`, size: [1920, 1200] as [number, number], cfg: { style: s.id }, mode: "product" as const })),
   {
     name: "macro-panel",
     size: [1600, 1200],
