@@ -1,0 +1,758 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Threshold Door Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;600;700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: showroom wall — catalog of doors drawn to real scale, a drafting-table configurator (preview with dimension lines beside numbered build steps), quote desk, showroom inbox */
+:root{
+  --bg:#E8ECE6; --surface:#F5F7F3; --raise:#FFFFFF; --ink:#1A211D; --muted:#58645D; --line:#CBD3CB;
+  --accent:#1D5A4A; --accent-ink:#FFFFFF; --accent-soft:#D5E5DD; --brass:#8E6421;
+  --wall:#DCE1DA; --wall-2:#D2D8D0; --floor:#BFB6A6; --skirt:#EEF0EC;
+  --good:#2C7A4D; --warn:#9A5A14; --bad:#A33A2F; --warn-soft:#F4E6D2;
+  --display:"Antonio","Arial Narrow","Roboto Condensed",sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111513; --surface:#181D1A; --raise:#202622; --ink:#E3E8E3; --muted:#98A39C; --line:#2F3832;
+  --accent:#72B9A0; --accent-ink:#0C1310; --accent-soft:#1E332B; --brass:#D4A95E;
+  --wall:#232925; --wall-2:#1E2420; --floor:#2A2722; --skirt:#2C332E;
+  --good:#6EC291; --warn:#E3A35C; --bad:#E57D70; --warn-soft:#33281A; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#111513; --surface:#181D1A; --raise:#202622; --ink:#E3E8E3; --muted:#98A39C; --line:#2F3832;
+  --accent:#72B9A0; --accent-ink:#0C1310; --accent-soft:#1E332B; --brass:#D4A95E;
+  --wall:#232925; --wall-2:#1E2420; --floor:#2A2722; --skirt:#2C332E;
+  --good:#6EC291; --warn:#E3A35C; --bad:#E57D70; --warn-soft:#33281A; color-scheme:dark;}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px}
+@media (max-width:600px){.wrap{padding-inline:16px}}
+h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:.01em;text-wrap:balance;margin:0;line-height:1.05}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0}
+.brand svg{flex:none}
+.brand b{font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:.14em;line-height:1}
+.brand span{display:block;font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;max-width:100%;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;background:none;padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--muted);white-space:nowrap;display:flex;gap:6px;align-items:center}
+.tab:hover{color:var(--ink)}
+.tab.on{background:var(--ink);color:var(--bg)}
+.count{font-family:var(--mono);font-size:11px;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:0 7px;line-height:18px}
+.tab.on .count{background:var(--bg);color:var(--ink)}
+
+main{padding-block:28px 80px}
+section.view{display:flex;flex-direction:column;gap:24px}
+
+/* browse */
+.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.intro h1{font-size:clamp(40px,6vw,68px);text-transform:uppercase;letter-spacing:.02em}
+.intro p{max-width:46ch;color:var(--muted);margin:8px 0 0}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);padding:7px 13px;border-radius:999px;cursor:pointer;font-size:14px;font-weight:500;display:inline-flex;flex-direction:column;align-items:flex-start;line-height:1.25;text-align:left}
+.chip small{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.chip:hover{border-color:var(--muted)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip.on small{color:var(--accent-ink);opacity:.8}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;text-align:left;padding:0;transition:transform .15s,border-color .15s}
+.card:hover{border-color:var(--muted);transform:translateY(-2px)}
+.card .pv{aspect-ratio:3/4;background:var(--wall);max-width:100%}
+.card .pv svg{width:100%;height:100%;display:block}
+.card .meta{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.card h3{font-size:22px;text-transform:uppercase}
+.card p{margin:0;font-size:13px;color:var(--muted);flex:1}
+.card .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:6px}
+.from{font-family:var(--mono);font-size:13px}
+.from b{color:var(--brass);font-weight:500}
+.rooms{font-size:11px;color:var(--muted)}
+.note{font-size:12px;color:var(--muted)}
+
+/* design */
+.design{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:start}
+.stage{position:sticky;top:84px;display:flex;flex-direction:column;gap:14px}
+.preview{background:var(--wall);border-radius:var(--r);border:1px solid var(--line);aspect-ratio:5/6;max-width:100%;overflow:hidden}
+.preview svg{width:100%;height:100%;display:block}
+.specline{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.6}
+.pricebox{background:var(--raise);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px}
+.pricebox .big{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pricebox .big strong{font-family:var(--display);font-size:38px;font-weight:600;letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.bd{width:100%;border-collapse:collapse;font-size:13px}
+.bd td{padding:4px 0;border-bottom:1px dashed var(--line)}
+.bd td:last-child{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:12px}
+.bd tr:last-child td{border-bottom:0}
+details summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--accent)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:none;border-color:transparent;color:var(--accent);padding-inline:8px}
+.btn.small{padding:6px 10px;font-size:13px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.qty button{border:0;background:none;width:34px;height:38px;cursor:pointer;font-size:18px}
+.qty span{min-width:30px;text-align:center;font-family:var(--mono)}
+
+.steps{display:flex;flex-direction:column;gap:6px}
+fieldset{border:0;border-top:1px solid var(--line);margin:0;padding:18px 0 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+legend{display:flex;align-items:baseline;gap:10px;padding:0;float:left;width:100%;margin-bottom:2px}
+legend .n{font-family:var(--mono);font-size:12px;color:var(--brass)}
+legend h2{font-size:24px;text-transform:uppercase}
+fieldset > *{clear:both}
+.sub{font-size:12px;font-weight:600;color:var(--muted);margin:2px 0 -4px}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{width:46px;display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:none;padding:0;cursor:pointer;font-size:11px;color:var(--muted);text-align:center;line-height:1.2}
+.sw i{width:40px;height:40px;border-radius:50%;border:1px solid rgba(0,0,0,.18);display:block;box-shadow:inset 0 -6px 10px rgba(0,0,0,.12)}
+.sw.on i{outline:2px solid var(--accent);outline-offset:3px}
+.sw.on{color:var(--ink);font-weight:600}
+.dimrow{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font-size:12px;font-weight:600;color:var(--muted)}
+.field input,.field select,.field textarea{border:1px solid var(--line);background:var(--raise);border-radius:8px;padding:9px 11px;width:100%}
+.field input.num{width:110px;font-family:var(--mono)}
+.feet{font-family:var(--mono);font-size:12px;color:var(--muted);padding-bottom:10px}
+.advice{background:var(--warn-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.advice b{color:var(--warn)}
+.toggle{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px}
+.toggle input{width:18px;height:18px;accent-color:var(--accent)}
+
+/* visualise */
+.viz{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px;align-items:start}
+.vstage{position:relative;aspect-ratio:4/3;max-width:100%;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--wall);touch-action:none;user-select:none}
+.vstage > img,.vstage > svg.scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vdoor{position:absolute;cursor:grab;filter:drop-shadow(0 10px 14px rgba(0,0,0,.28))}
+.vdoor:active{cursor:grabbing}
+.vdoor svg{height:100%;width:100%;display:block}
+.vpanel{display:flex;flex-direction:column;gap:16px}
+.vpanel input[type=range]{width:100%;accent-color:var(--accent)}
+
+/* quote */
+.quote{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:start}
+.items{display:flex;flex-direction:column;gap:10px}
+.item{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;align-items:center}
+.item .thumb{width:72px;height:96px;background:var(--wall);border-radius:6px;overflow:hidden}
+.item .thumb svg{width:100%;height:100%;display:block}
+.item h3{font-size:20px;text-transform:uppercase}
+.item .spec{font-size:12px;color:var(--muted);font-family:var(--mono);line-height:1.55}
+.item .right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.item .amt{font-family:var(--mono);font-size:15px}
+@media (max-width:560px){.item{grid-template-columns:60px minmax(0,1fr)}.item .thumb{width:60px;height:80px}.item .right{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}}
+.panel{background:var(--raise);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px}
+.totals{display:grid;grid-template-columns:1fr auto;gap:6px 16px;font-size:14px}
+.totals .v{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.totals .grand{font-family:var(--display);font-size:30px;font-weight:600}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form .full{grid-column:1/-1}
+@media (max-width:520px){.form{grid-template-columns:1fr}}
+.err{color:var(--bad);font-size:12px}
+.empty{border:1.5px dashed var(--line);border-radius:var(--r);padding:36px 20px;text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:12px;align-items:center}
+.empty h3{font-size:26px;color:var(--ink);text-transform:uppercase}
+.done{background:var(--accent-soft);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:10px}
+.done h3{font-size:26px;text-transform:uppercase}
+.ref{font-family:var(--mono);font-size:18px;color:var(--accent);font-weight:500}
+pre.sum{white-space:pre-wrap;font-family:var(--mono);font-size:12px;background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:12px;margin:0;max-height:260px;overflow:auto}
+.hist{display:flex;flex-direction:column;gap:8px}
+.hrow{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.pill{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.st-new{color:var(--accent)} .st-contacted{color:var(--brass)} .st-visit{color:var(--warn)} .st-quoted{color:var(--muted)} .st-won{color:var(--good)} .st-lost{color:var(--bad)}
+
+/* inbox */
+.istats{display:flex;gap:8px;flex-wrap:wrap}
+.req{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;border-left:4px solid var(--line)}
+.req.s-new{border-left-color:var(--accent)} .req.s-won{border-left-color:var(--good)} .req.s-lost{border-left-color:var(--bad)} .req.s-visit{border-left-color:var(--warn)} .req.s-contacted{border-left-color:var(--brass)}
+.req header{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.req h3{font-size:22px;text-transform:uppercase}
+.req .who{font-size:13px;color:var(--muted)}
+.req ul{margin:0;padding-left:18px;font-size:13px}
+.req select{border:1px solid var(--line);background:var(--raise);border-radius:8px;padding:7px 10px}
+
+.mbar{display:none}
+@media (max-width:860px){
+  .design,.viz,.quote{grid-template-columns:minmax(0,1fr)}
+  .stage{position:static}
+  .preview{aspect-ratio:1/1}
+  .stage .pricebox{display:none}
+  .mbar:not([hidden]){display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--raise);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));gap:12px;align-items:center;justify-content:space-between}
+  .mbar strong{font-family:var(--display);font-size:26px;font-weight:600}
+}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-weight:600;font-size:14px;transition:.2s;pointer-events:none;z-index:50;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:860px){.toast{bottom:84px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="30" height="38" viewBox="0 0 30 38" aria-hidden="true"><rect x="1.5" y="1.5" width="27" height="35" rx="1" fill="none" stroke="currentColor" stroke-width="3"/><rect x="7" y="7" width="16" height="11" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7" y="21" width="16" height="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="19.5" r="1.8" fill="var(--brass)"/></svg>
+      <div><b id="brandName">THRESHOLD</b><span id="brandTag">Doors &amp; Interiors · Hyderabad</span></div>
+    </div>
+    <nav class="tabs" aria-label="Sections">
+      <button class="tab on" data-tab="browse" id="t-browse">Browse</button>
+      <button class="tab" data-tab="design" id="t-design">Design</button>
+      <button class="tab" data-tab="visualise" id="t-visualise">See it in your space</button>
+      <button class="tab" data-tab="quote" id="t-quote">Quote <span class="count" id="qcount" hidden>0</span></button>
+      <button class="tab" data-tab="inbox" id="t-inbox" hidden>Showroom inbox <span class="count" id="icount" hidden>0</span></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="view" id="v-browse">
+    <div class="intro">
+      <div>
+        <h1>Pick a door.<br>Make it yours.</h1>
+        <p>Every design is drawn to scale and priced live. Choose a style, change the wood, colour and hardware, then send it to the showroom for a site measurement and final quote.</p>
+      </div>
+      <div class="filters" id="roomFilter"></div>
+    </div>
+    <div class="grid" id="catalog"></div>
+    <p class="note">Prices shown are starting estimates for the default size and finish, before GST. Final price is confirmed after a free site measurement.</p>
+  </section>
+
+  <section class="view" id="v-design" hidden>
+    <div class="design">
+      <div class="stage">
+        <div class="preview" id="preview"></div>
+        <div class="specline" id="specline"></div>
+        <div class="pricebox" id="pricebox"></div>
+      </div>
+      <form class="steps" id="options" onsubmit="return false"></form>
+    </div>
+  </section>
+
+  <section class="view" id="v-visualise" hidden>
+    <div class="intro">
+      <div>
+        <h1>See it in your space</h1>
+        <p>Upload a photo of your doorway, then drag and resize the door to fit. Use it to judge colour and proportion before you commit.</p>
+      </div>
+    </div>
+    <div class="viz">
+      <div class="vstage" id="vstage"></div>
+      <div class="vpanel">
+        <div class="field">
+          <label for="vfile">Your photo</label>
+          <input type="file" id="vfile" accept="image/*">
+          <span class="note">Stays on your device. Shoot straight on, from about chest height.</span>
+        </div>
+        <div class="field">
+          <label for="vpick">Door to place</label>
+          <select id="vpick"></select>
+        </div>
+        <div class="field">
+          <label for="vsize">Door height in the photo</label>
+          <input type="range" id="vsize" min="20" max="98" value="62">
+        </div>
+        <div class="actions">
+          <button class="btn" type="button" id="vreset">Reset position</button>
+          <button class="btn" type="button" id="vsample">Use sample wall</button>
+          <button class="btn primary" type="button" data-tab="design">Change this design</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="v-quote" hidden>
+    <div class="intro"><div><h1>Your quote</h1><p>Add every door for the project, then send one request. The showroom calls back to book a site measurement and confirms the final price.</p></div></div>
+    <div class="quote">
+      <div class="items" id="items"></div>
+      <div class="panel" id="qpanel"></div>
+    </div>
+    <div id="history"></div>
+  </section>
+
+  <section class="view" id="v-inbox" hidden>
+    <div class="intro"><div><h1>Showroom inbox</h1><p>Quote requests from customers, newest first. Change the status as you follow up. Only you and editors see this.</p></div><div class="istats" id="istats"></div></div>
+    <div class="items" id="inbox"></div>
+  </section>
+</main>
+
+<div class="mbar" id="mbar" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============ CONFIG — replace with the company's real catalogue & rates ============ */
+const BRAND = { name:"THRESHOLD", tag:"Doors & Interiors · Hyderabad", phone:"+91 90000 00000", gst:0.18, refPrefix:"TH" };
+
+const ROOMS = [
+  {id:"main",label:"Main entrance"},{id:"bedroom",label:"Bedroom"},{id:"bath",label:"Bathroom"},
+  {id:"utility",label:"Kitchen & utility"},{id:"balcony",label:"Balcony & patio"}];
+
+// rate = ₹ per sq ft of shutter at base core/finish/thickness
+const STYLES = [
+  {id:"flush",name:"Flush",blurb:"Clean, flat shutter. The everyday bedroom and utility door.",rate:420,rooms:["bedroom","utility","bath"],
+    def:{thick:32,core:"hardwood",finish:"laminate",color:"lam-ivory",handle:"lever",hw:"steel",lock:"tubular",room:"bedroom"}},
+  {id:"shaker",name:"Shaker",blurb:"Two recessed panels with square edges. Calm and timeless.",rate:820,rooms:["bedroom","utility"],
+    def:{thick:35,core:"engineered",finish:"pu",color:"pu-sage",handle:"lever",hw:"black",lock:"tubular",room:"bedroom"}},
+  {id:"panel4",name:"Four-Panel",blurb:"The classic Indian home door, in solid wood with raised panels.",rate:900,rooms:["bedroom","main"],
+    def:{thick:35,core:"sal",finish:"veneer",color:"ven-teak",handle:"lever",hw:"brass",lock:"mortise",room:"bedroom"}},
+  {id:"grooved",name:"Grooved",blurb:"Horizontal V-grooves on a flat shutter. Modern, low-cost upgrade.",rate:640,rooms:["bedroom","utility"],
+    def:{thick:32,core:"engineered",finish:"laminate",color:"lam-walnut",handle:"lever",hw:"black",lock:"tubular",room:"bedroom"}},
+  {id:"glass",name:"Glass Strip",blurb:"A vertical glass light that brings daylight into passages.",rate:880,rooms:["utility","balcony","bedroom"],glass:true,
+    def:{thick:35,core:"engineered",finish:"laminate",color:"lam-oak",glass:"fluted",handle:"lever",hw:"black",lock:"tubular",room:"utility"}},
+  {id:"louvre",name:"Louvred",blurb:"Angled slats for airflow. Made for bathrooms and stores.",rate:760,rooms:["bath","utility"],
+    def:{thick:32,core:"wpc",finish:"pu",color:"pu-white",handle:"knob",hw:"steel",lock:"privacy",room:"bath"}},
+  {id:"main",name:"Carved Main",blurb:"Solid teak entrance with raised panels and diamond insets.",rate:1500,rooms:["main"],
+    def:{w:1000,h:2400,thick:40,core:"teak",finish:"veneer",color:"ven-teak",handle:"pull",hw:"brass",lock:"mortise",frame:"teak",arch:true,room:"main"}},
+  {id:"pivot",name:"Pivot Entrance",blurb:"An oversized door that turns on a pivot. Statement entrances.",rate:2200,rooms:["main"],noFrame:true,
+    special:{label:"Floor & top pivot set",price:18000},install:4500,
+    def:{w:1200,h:2700,thick:45,core:"engineered",finish:"veneer",color:"ven-walnut",handle:"pull",hw:"black",lock:"smart",frame:"none",room:"main"}},
+  {id:"barn",name:"Sliding Barn",blurb:"Slides along a wall track. Saves swing space in tight rooms.",rate:980,rooms:["bedroom","utility","balcony"],noFrame:true,
+    special:{label:"Top track & roller kit",price:8500},
+    def:{thick:35,core:"engineered",finish:"pu",color:"pu-ink",handle:"flush",hw:"black",lock:"none",frame:"none",room:"utility"}},
+];
+const CORES = [
+  {id:"hardwood",label:"Hardwood flush board",mult:1.0},
+  {id:"engineered",label:"Engineered wood (HDF)",mult:0.9},
+  {id:"wpc",label:"WPC, waterproof",mult:1.12},
+  {id:"sal",label:"Solid sal wood",mult:1.4},
+  {id:"teak",label:"Solid Burma teak",mult:2.0}];
+const THICK = [{id:32,label:"32 mm",mult:1},{id:35,label:"35 mm",mult:1.08},{id:40,label:"40 mm",mult:1.2},{id:45,label:"45 mm",mult:1.32}];
+const FINISHES = [
+  {id:"laminate",label:"Laminate",mult:1.0,note:"1 mm HPL, scratch resistant",colors:[
+    {id:"lam-ivory",label:"Ivory",hex:"#E7E0D0"},{id:"lam-grey",label:"Stone",hex:"#9DA09B"},{id:"lam-charcoal",label:"Charcoal",hex:"#3A3C3D"},
+    {id:"lam-oak",label:"Oak grain",hex:"#B98F5E",grain:1},{id:"lam-walnut",label:"Walnut grain",hex:"#6A4934",grain:1}]},
+  {id:"veneer",label:"Natural veneer",mult:1.3,note:"Real wood, PU lacquered",colors:[
+    {id:"ven-teak",label:"Teak",hex:"#8A5A2E",grain:1},{id:"ven-walnut",label:"Walnut",hex:"#58392A",grain:1},
+    {id:"ven-oak",label:"Oak",hex:"#C39B66",grain:1},{id:"ven-ash",label:"Ash",hex:"#D3BE98",grain:1}]},
+  {id:"pu",label:"PU paint",mult:1.45,note:"Smooth satin, any shade",colors:[
+    {id:"pu-white",label:"Chalk",hex:"#F0EFEA"},{id:"pu-sage",label:"Sage",hex:"#A3B19B"},{id:"pu-clay",label:"Clay",hex:"#B4735A"},
+    {id:"pu-ink",label:"Ink blue",hex:"#28323C"},{id:"pu-black",label:"Black",hex:"#1D1D1E"}]},
+  {id:"membrane",label:"Membrane",mult:1.15,note:"Seamless PVC wrap, wipe-clean",colors:[
+    {id:"mem-white",label:"White",hex:"#EBEAE5"},{id:"mem-cream",label:"Cream",hex:"#E4DAC3"},{id:"mem-grey",label:"Grey",hex:"#8D9295"}]}];
+const GLASS = [{id:"frosted",label:"Frosted",price:2800,fill:"#DCE6E8"},{id:"clear",label:"Clear",price:2200,fill:"#B7CFD6"},
+  {id:"fluted",label:"Fluted",price:3600,fill:"#CFDDE0"},{id:"smoked",label:"Smoked",price:3200,fill:"#4B5154"}];
+const HANDLES = [{id:"lever",label:"Lever on rose",price:1400},{id:"knob",label:"Round knob",price:750},
+  {id:"pull",label:"Pull bar",price:3600},{id:"flush",label:"Recessed pull",price:950}];
+const HWF = [{id:"steel",label:"Satin steel",price:0,hex:"#B9BFC2"},{id:"black",label:"Matte black",price:350,hex:"#1F2021"},
+  {id:"brass",label:"Antique brass",price:700,hex:"#B08A4F"},{id:"rose",label:"Rose gold",price:600,hex:"#C3907C"}];
+const LOCKS = [{id:"none",label:"No lock",price:0},{id:"privacy",label:"Privacy latch",price:650},
+  {id:"tubular",label:"Key lock",price:950},{id:"mortise",label:"Mortise lock",price:2400},{id:"smart",label:"Smart lock",price:16500}];
+const FRAMES = [{id:"none",label:"Shutter only",price:0},{id:"wpc",label:"WPC frame",price:3800},
+  {id:"sal",label:"Sal wood frame",price:4600},{id:"teak",label:"Teak frame",price:10500}];
+const SIZES = [[750,2100,"Bathroom"],[800,2100,"Utility"],[900,2100,"Standard"],[1000,2100,"Wide"],[1000,2400,"Tall entrance"],[1200,2700,"Grand"]];
+const STATUS = [{id:"new",label:"New"},{id:"contacted",label:"Contacted"},{id:"visit",label:"Site visit booked"},{id:"quoted",label:"Quote sent"},{id:"won",label:"Won"},{id:"lost",label:"Lost"}];
+const INSTALL = 1800, ARCH = 2600, CONCEALED = 3400;
+
+/* ============ helpers ============ */
+const $ = (s,r=document)=>r.querySelector(s);
+const by = (arr,id)=>arr.find(x=>x.id==id);
+const STY = id=>by(STYLES,id);
+const inr = n=>"₹"+Math.round(n).toLocaleString("en-IN");
+const esc = s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const r10 = n=>Math.round(n/10)*10;
+const ft = mm=>{const t=Math.round(mm/25.4);return `${Math.floor(t/12)}′ ${t%12}″`};
+const store = {get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+function shade(hex,amt){let n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255,t=amt<0?0:255,p=Math.abs(amt);
+  r=Math.round((t-r)*p+r);g=Math.round((t-g)*p+g);b=Math.round((t-b)*p+b);return"#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)}
+function lum(hex){const n=parseInt(hex.slice(1),16);return(0.299*(n>>16)+0.587*(n>>8&255)+0.114*(n&255))/255}
+const colorOf = c=>{const f=by(FINISHES,c.finish);return by(f.colors,c.color)||f.colors[0]};
+let toastT; function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2400)}
+const uid = ()=>Math.random().toString(36).slice(2,9);
+
+function defaultCfg(styleId){
+  const s=STY(styleId);
+  return {style:styleId,w:900,h:2100,thick:35,core:"engineered",finish:"laminate",color:"lam-ivory",glass:"frosted",handle:"lever",hw:"steel",
+    lock:"tubular",frame:"sal",arch:false,hinge:"standard",swing:"R",open:"in",qty:1,install:true,room:s.rooms[0],...s.def};
+}
+
+/* ============ pricing ============ */
+function price(c){
+  const s=STY(c.style), area=c.w*c.h/92903.04;
+  const L=[];
+  L.push([`${s.name} shutter · ${area.toFixed(1)} sq ft · ${by(CORES,c.core).label.toLowerCase()} · ${by(FINISHES,c.finish).label.toLowerCase()}`,
+    r10(s.rate*area*by(CORES,c.core).mult*by(FINISHES,c.finish).mult*by(THICK,c.thick).mult)]);
+  if(s.glass) L.push([`${by(GLASS,c.glass).label} glass panel`,by(GLASS,c.glass).price]);
+  const h=by(HANDLES,c.handle);
+  L.push([`${h.label}${c.style==="pivot"&&c.handle==="pull"?", 1400 mm":""}, ${by(HWF,c.hw).label.toLowerCase()}`, r10(h.price*(c.style==="pivot"&&c.handle==="pull"?1.9:1)+by(HWF,c.hw).price)]);
+  if(c.lock!=="none") L.push([by(LOCKS,c.lock).label,by(LOCKS,c.lock).price]);
+  if(s.special) L.push([s.special.label,s.special.price]);
+  else L.push(c.hinge==="concealed"?["Concealed 3D hinges",CONCEALED]:["3 SS ball-bearing hinges",0]);
+  if(!s.noFrame&&c.frame!=="none") L.push([by(FRAMES,c.frame).label,by(FRAMES,c.frame).price]);
+  if(!s.noFrame&&c.arch) L.push(["Architrave, both faces",ARCH]);
+  if(c.install) L.push(["Fitting & installation",s.install||INSTALL]);
+  return {lines:L,unit:L.reduce((a,l)=>a+l[1],0),area};
+}
+function fromPrice(s){return price(defaultCfg(s.id)).unit}
+function totals(items){const sub=items.reduce((a,i)=>a+price(i.cfg).unit*i.cfg.qty,0);const gst=Math.round(sub*BRAND.gst);return{sub,gst,total:sub+gst,doors:items.reduce((a,i)=>a+i.cfg.qty,0)}}
+function summary(c){const s=STY(c.style);return `${s.name} · ${c.w}×${c.h} mm · ${c.thick} mm · ${by(CORES,c.core).label} · ${by(FINISHES,c.finish).label} ${colorOf(c).label}${s.glass?` · ${by(GLASS,c.glass).label} glass`:""} · ${by(HANDLES,c.handle).label} (${by(HWF,c.hw).label})${c.lock!=="none"?` · ${by(LOCKS,c.lock).label}`:""}${!s.noFrame&&c.frame!=="none"?` · ${by(FRAMES,c.frame).label}`:""}${!s.noFrame&&c.arch?" · architrave":""} · ${c.swing==="R"?"RH":"LH"} ${c.open==="in"?"inward":"outward"}`}
+
+/* ============ door drawing (all units mm) ============ */
+let svgN=0, lastVB=[0,0,1,1];
+function doorSVG(c,{mode="scene",dims=false}={}){
+  const n=++svgN, s=STY(c.style), W=c.w, H=c.h, col=colorOf(c), base=col.hex;
+  const F=(s.noFrame||c.frame==="none")?0:55, A=(!s.noFrame&&c.arch)?75:0, O=F+A;
+  const barn=c.style==="barn", top=-O-(barn?190:0);
+  let vb;
+  if(mode==="mini"){vb=[W/2-1050,H-2950,2100,3100]}
+  else if(mode==="bare"){vb=[-O-(barn?80:0),top,W+2*O+(barn?160:0),H-top]}
+  else {const x0=-O-(dims?320:240),x1=W+O+(dims?420:240),y0=top-(dims?360:240);vb=[x0,y0,x1-x0,H+170-y0]}
+  lastVB=vb;
+  const dark=shade(base,-.32), light=shade(base,.22), fill=col.grain?`url(#gr${n})`:base;
+  const hw=by(HWF,c.hw).hex;
+  let d="";
+  const defs=`<defs>
+    <pattern id="gr${n}" patternUnits="userSpaceOnUse" width="46" height="620"><rect width="46" height="620" fill="${base}"/>
+      <path d="M8 0 Q14 160 7 310 T9 620" stroke="${shade(base,-.2)}" stroke-width="3" fill="none" opacity=".55"/>
+      <path d="M27 0 Q21 200 29 380 T26 620" stroke="${shade(base,-.14)}" stroke-width="2" fill="none" opacity=".5"/>
+      <path d="M39 0 Q43 120 38 300 T40 620" stroke="${shade(base,.12)}" stroke-width="2" fill="none" opacity=".5"/></pattern>
+    <linearGradient id="lg${n}" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".10"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient>
+    <pattern id="fl${n}" patternUnits="userSpaceOnUse" width="16" height="16"><rect width="16" height="16" fill="${by(GLASS,c.glass).fill}"/><rect width="5" height="16" fill="#fff" opacity=".35"/></pattern>
+  </defs>`;
+  const panel=(x,y,w,h,raised)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#000" opacity="${raised?.0:.06}"/>
+    <path d="M${x} ${y+h}V${y}H${x+w}" stroke="${raised?light:dark}" stroke-width="10" fill="none" opacity=".8"/><path d="M${x+w} ${y}V${y+h}H${x}" stroke="${raised?dark:light}" stroke-width="10" fill="none" opacity=".8"/>
+    ${raised?`<rect x="${x+40}" y="${y+40}" width="${w-80}" height="${h-80}" fill="none" stroke="${dark}" stroke-width="4" opacity=".5"/>`:""}`;
+  // scene
+  if(mode!=="bare"){
+    const X0=vb[0]-6000,XW=vb[2]+12000,Y0=vb[1]-6000;
+    d+=`<rect x="${X0}" y="${Y0}" width="${XW}" height="${H-Y0}" style="fill:var(--wall)"/>
+        <rect x="${X0}" y="${H}" width="${XW}" height="6000" style="fill:var(--floor)"/>
+        <rect x="${X0}" y="${H-100}" width="${-O-X0}" height="100" style="fill:var(--skirt)"/>
+        <rect x="${W+O}" y="${H-100}" width="${X0+XW-W-O}" height="100" style="fill:var(--skirt)"/>
+        <ellipse cx="${W/2}" cy="${H+18}" rx="${W*.62}" ry="34" fill="#000" opacity=".18"/>`;
+  }
+  // frame + architrave
+  const fcol=c.frame==="teak"?"#7A4D2A":c.frame==="sal"?"#86603F":c.frame==="wpc"?"#E2DFD7":base;
+  if(A) d+=`<path d="M${-O} ${H}V${-O}H${W+O}V${H}H${W+F}V${-F}H${-F}V${H}Z" fill="${fcol}"/><path d="M${-O} ${H}V${-O}H${W+O}" stroke="${shade(fcol,.25)}" stroke-width="8" fill="none"/><path d="M${-F} ${H}V${-F}H${W+F}V${H}" stroke="${shade(fcol,-.35)}" stroke-width="6" fill="none"/>`;
+  if(F) d+=`<path d="M${-F} ${H}V${-F}H${W+F}V${H}H${W}V0H0V${H}Z" fill="${shade(fcol,-.08)}"/><path d="M0 ${H}V0H${W}V${H}" stroke="${shade(fcol,-.45)}" stroke-width="6" fill="none"/>`;
+  // barn track
+  if(barn) d+=`<rect x="-60" y="-150" width="${W+120}" height="34" rx="6" fill="#2A2B2C"/>
+      ${[W*.2,W*.8].map(x=>`<circle cx="${x}" cy="-110" r="44" fill="#2A2B2C"/><circle cx="${x}" cy="-110" r="14" fill="#6B6E70"/><rect x="${x-14}" y="-110" width="28" height="170" fill="#2A2B2C"/>`).join("")}`;
+  // shutter
+  d+=`<rect x="0" y="0" width="${W}" height="${H}" fill="${fill}"/>`;
+  const st=Math.max(90,Math.min(150,W*.14));
+  switch(c.style){
+    case"shaker":{d+=panel(st,st,W-2*st,H*.42-st)+panel(st,H*.42+st*.8,W-2*st,H-st*1.4-(H*.42+st*.8));break}
+    case"panel4":{const g=st*.8,cw=(W-2*st-g)/2,y2=H*.4+st*1.2;
+      d+=panel(st,st,cw,H*.4-st,1)+panel(st+cw+g,st,cw,H*.4-st,1)+panel(st,y2,cw,H-st*1.5-y2,1)+panel(st+cw+g,y2,cw,H-st*1.5-y2,1);break}
+    case"grooved":{for(let y=300;y<H-220;y+=170) d+=`<rect x="0" y="${y}" width="${W}" height="7" fill="${dark}" opacity=".7"/><rect x="0" y="${y+7}" width="${W}" height="4" fill="${light}" opacity=".6"/>`;break}
+    case"glass":{const gx=c.swing==="R"?W*.2:W*.64,gw=W*.16,gf=c.glass==="fluted"?`url(#fl${n})`:by(GLASS,c.glass).fill;
+      d+=`<rect x="${gx-14}" y="206" width="${gw+28}" height="${H-412}" fill="${dark}" opacity=".6"/><rect x="${gx}" y="220" width="${gw}" height="${H-440}" fill="${gf}"/>
+        ${c.glass==="clear"||c.glass==="smoked"?`<path d="M${gx+gw*.15} ${220+H*.2}L${gx+gw*.85} ${220+H*.05}L${gx+gw*.85} ${220+H*.1}L${gx+gw*.15} ${220+H*.25}Z" fill="#fff" opacity=".22"/>`:""}`;break}
+    case"louvre":{const sec=(y1,y2)=>{let o=`<rect x="${st}" y="${y1}" width="${W-2*st}" height="${y2-y1}" fill="${shade(base,-.4)}"/>`;for(let y=y1+8;y<y2-24;y+=44)o+=`<rect x="${st}" y="${y}" width="${W-2*st}" height="30" fill="${fill}"/><rect x="${st}" y="${y}" width="${W-2*st}" height="6" fill="${light}" opacity=".7"/>`;return o};
+      d+=sec(140,H*.46)+sec(H*.54,H-170);break}
+    case"main":{const b=90,pw=(W-2*b-3*60)/2+0,px1=b+60,px2=b+60+pw+60,y1=b+60,y2=H*.53;
+      d+=`<rect x="${b}" y="${b}" width="${W-2*b}" height="${H-2*b}" fill="none" stroke="${dark}" stroke-width="12"/>`;
+      [[px1,y1,H*.47-y1],[px2,y1,H*.47-y1],[px1,y2,H-b-60-y2],[px2,y2,H-b-60-y2]].forEach(([x,y,h])=>{d+=panel(x,y,pw,h,1);const cx=x+pw/2,cy=y+h/2,r=Math.min(pw,h)*.28;
+        d+=`<path d="M${cx} ${cy-r}L${cx+r*.7} ${cy}L${cx} ${cy+r}L${cx-r*.7} ${cy}Z" fill="${shade(base,-.15)}" stroke="${light}" stroke-width="6"/><circle cx="${cx}" cy="${cy}" r="${r*.16}" fill="${by(HWF,"brass").hex}"/>`});break}
+    case"pivot":{for(let x=150;x<W-60;x+=150) d+=`<rect x="${x}" y="0" width="8" height="${H}" fill="${dark}" opacity=".55"/><rect x="${x+8}" y="0" width="4" height="${H}" fill="${light}" opacity=".5"/>`;break}
+    case"barn":{for(let i=1;i<5;i++) d+=`<rect x="${W*i/5-3}" y="0" width="6" height="${H}" fill="${dark}" opacity=".45"/>`;
+      const bnd=`fill="${shade(base,.06)}" stroke="${dark}" stroke-width="6"`;
+      d+=`<rect x="0" y="110" width="${W}" height="150" ${bnd}/><rect x="0" y="${H-280}" width="${W}" height="150" ${bnd}/>
+        <path d="M60 ${H-280}L${W-60-110} 260L${W-60} 260L170 ${H-280}Z" ${bnd}/>`;break}
+  }
+  d+=`<rect x="0" y="0" width="${W}" height="${H}" fill="url(#lg${n})"/><rect x="3" y="3" width="${W-6}" height="${H-6}" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="6"/>`;
+  // hardware
+  const R=c.swing==="R", ex=R?W-80:80, hy=H-1000, dir=R?-1:1;
+  const shadow=`<rect x="${ex-20}" y="${hy-88}" width="44" height="184" rx="22" fill="#000" opacity=".18"/>`;
+  if(c.handle==="lever"){d+=shadow+`<rect x="${ex-22}" y="${hy-92}" width="44" height="184" rx="22" fill="${hw}"/><rect x="${dir<0?ex-160:ex}" y="${hy-16}" width="160" height="32" rx="16" fill="${hw}"/><rect x="${dir<0?ex-160:ex}" y="${hy-16}" width="160" height="8" rx="4" fill="#fff" opacity=".25"/>`}
+  else if(c.handle==="knob"){d+=`<circle cx="${ex+4}" cy="${hy+6}" r="50" fill="#000" opacity=".18"/><circle cx="${ex}" cy="${hy}" r="50" fill="${shade(hw,-.25)}"/><circle cx="${ex}" cy="${hy}" r="36" fill="${hw}"/><circle cx="${ex-10}" cy="${hy-12}" r="10" fill="#fff" opacity=".35"/>`}
+  else if(c.handle==="flush"){d+=`<rect x="${ex-26}" y="${hy-100}" width="52" height="200" rx="26" fill="${shade(base,-.45)}" stroke="${hw}" stroke-width="8"/>`}
+  else {const len=c.style==="pivot"?1400:600,px=R?W-(c.style==="pivot"?190:170):(c.style==="pivot"?190:170);
+    d+=`<rect x="${px-6}" y="${hy-len/2+10}" width="30" height="${len}" rx="15" fill="#000" opacity=".2"/><rect x="${px-15}" y="${hy-len/2}" width="30" height="${len}" rx="15" fill="${hw}"/><rect x="${px-15}" y="${hy-len/2}" width="9" height="${len}" rx="4" fill="#fff" opacity=".25"/>`}
+  if(c.lock==="smart") d+=`<rect x="${ex-40}" y="${hy-400}" width="80" height="240" rx="16" fill="#151617"/><rect x="${ex-26}" y="${hy-376}" width="52" height="96" rx="8" fill="#2F5E78"/><circle cx="${ex}" cy="${hy-220}" r="18" fill="#3A3C3E"/>`;
+  else if(c.lock==="mortise") d+=`<rect x="${ex-18}" y="${hy+120}" width="36" height="110" rx="18" fill="${hw}"/><circle cx="${ex}" cy="${hy+160}" r="9" fill="#111"/><rect x="${ex-4}" y="${hy+160}" width="8" height="34" fill="#111"/>`;
+  else if(c.lock==="tubular"||c.lock==="privacy") d+=`<circle cx="${ex}" cy="${hy+130}" r="26" fill="${hw}"/><rect x="${ex-4}" y="${hy+114}" width="8" height="32" rx="3" fill="#111" opacity=".75"/>`;
+  // dimensions
+  if(dims){const dy=top-170,dx=W+O+200,ink='style="fill:var(--muted)"',ln='style="stroke:var(--muted)"';
+    d+=`<g stroke-width="5" ${ln}>
+      <line x1="0" y1="${-O-30}" x2="0" y2="${dy-40}" ${ln}/><line x1="${W}" y1="${-O-30}" x2="${W}" y2="${dy-40}" ${ln}/>
+      <line x1="-40" y1="${dy}" x2="${W+40}" y2="${dy}" ${ln}/><line x1="-30" y1="${dy+30}" x2="30" y2="${dy-30}" ${ln}/><line x1="${W-30}" y1="${dy+30}" x2="${W+30}" y2="${dy-30}" ${ln}/>
+      <line x1="${W+O+30}" y1="0" x2="${dx+40}" y2="0" ${ln}/><line x1="${W+O+30}" y1="${H}" x2="${dx+40}" y2="${H}" ${ln}/>
+      <line x1="${dx}" y1="-40" x2="${dx}" y2="${H+40}" ${ln}/><line x1="${dx-30}" y1="30" x2="${dx+30}" y2="-30" ${ln}/><line x1="${dx-30}" y1="${H+30}" x2="${dx+30}" y2="${H-30}" ${ln}/></g>
+      <text x="${W/2}" y="${dy-34}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="78" ${ink}>${W} mm · ${ft(W)}</text>
+      <text transform="translate(${dx+96} ${H/2}) rotate(-90)" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="78" ${ink}>${H} mm · ${ft(H)}</text>`;
+  }
+  return `<svg viewBox="${vb.join(" ")}" overflow="hidden" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(STY(c.style).name)} door, ${esc(colorOf(c).label)}">${defs}${d}</svg>`;
+}
+
+/* ============ state ============ */
+const S = {
+  tab:"browse", room:"all",
+  cfg: store.get("th.cfg",null) || defaultCfg("panel4"),
+  editing:null,
+  quote: store.get("th.quote",[]),
+  form: store.get("th.form",{name:"",phone:"",email:"",area:"",type:"New home",when:"1–2 months",visit:true,notes:""}),
+  done:null, mine: store.get("th.mine",[]),
+  viz:{photo:null,x:50,y:52,size:62,pick:"cur"},
+  inbox:[], admin:false
+};
+if(!STY(S.cfg.style)) S.cfg=defaultCfg("panel4");
+const save=()=>{store.set("th.cfg",S.cfg);store.set("th.quote",S.quote);store.set("th.form",S.form)};
+let DB=null, USER=null, UID=null;
+
+/* ============ tabs ============ */
+function go(tab){
+  S.tab=tab;
+  document.querySelectorAll("section.view").forEach(v=>v.hidden=v.id!=="v-"+tab);
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.tab===tab));
+  $("#mbar").hidden=tab!=="design";
+  render();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+/* ============ browse ============ */
+function renderBrowse(){
+  $("#roomFilter").innerHTML=[{id:"all",label:"All doors"},...ROOMS].map(r=>`<button type="button" class="chip${S.room===r.id?" on":""}" data-room="${r.id}" aria-pressed="${S.room===r.id}">${r.label}</button>`).join("");
+  const list=STYLES.filter(s=>S.room==="all"||s.rooms.includes(S.room));
+  $("#catalog").innerHTML=list.map(s=>`<button type="button" class="card" data-pick="${s.id}">
+    <div class="pv">${doorSVG(defaultCfg(s.id),{mode:"mini"})}</div>
+    <div class="meta"><h3>${s.name}</h3><p>${s.blurb}</p>
+      <div class="row"><span class="from">from <b>${inr(fromPrice(s))}</b></span><span class="rooms">${s.rooms.map(r=>by(ROOMS,r).label).join(" · ")}</span></div></div></button>`).join("");
+}
+
+/* ============ design ============ */
+function chips(key,opts,cur,sub){return `<div class="chips">${opts.map(o=>`<button type="button" class="chip${o.id==cur?" on":""}" data-set="${key}" data-val="${o.id}" aria-pressed="${o.id==cur}">${o.label||o.name}${sub?`<small>${sub(o)}</small>`:""}</button>`).join("")}</div>`}
+function renderDesign(){
+  const c=S.cfg, s=STY(c.style), fin=by(FINISHES,c.finish);
+  $("#preview").innerHTML=doorSVG(c,{dims:true});
+  $("#specline").textContent=summary(c);
+  let n=0; const step=(title,body)=>`<fieldset><legend><span class="n">${String(++n).padStart(2,"0")}</span><h2>${title}</h2></legend>${body}</fieldset>`;
+  const adv=[];
+  if(c.room==="bath"&&c.core!=="wpc") adv.push(`<div class="advice"><span><b>Bathroom door:</b> wood cores can swell with moisture. WPC won't.</span><button type="button" class="btn small" data-set="core" data-val="wpc">Switch to WPC</button></div>`);
+  if(c.room==="main"&&c.thick<40) adv.push(`<div class="advice"><span><b>Entrance door:</b> 40 mm or thicker is standard for security.</span><button type="button" class="btn small" data-set="thick" data-val="40">Make it 40 mm</button></div>`);
+  if(c.room==="main"&&(c.lock==="tubular"||c.lock==="privacy"||c.lock==="none")) adv.push(`<div class="advice"><span><b>Entrance door:</b> a mortise or smart lock is recommended.</span><button type="button" class="btn small" data-set="lock" data-val="mortise">Use mortise lock</button></div>`);
+  let h="";
+  h+=step("Room & style",`<div class="sub">Where is this door going?</div>${chips("room",ROOMS,c.room)}
+    <div class="sub">Style</div>${chips("style",STYLES,c.style,o=>"from "+inr(fromPrice(o)))}`);
+  h+=step("Size",`${chips("size",SIZES.map(z=>({id:z[0]+"x"+z[1],label:z[2]})),c.w+"x"+c.h,o=>o.id.replace("x"," × "))}
+    <div class="dimrow"><div class="field"><label for="in-w">Width (mm)</label><input class="num" id="in-w" type="number" min="600" max="1500" step="10" value="${c.w}" data-num="w"></div>
+    <div class="field"><label for="in-h">Height (mm)</label><input class="num" id="in-h" type="number" min="1800" max="3000" step="10" value="${c.h}" data-num="h"></div>
+    <div class="feet">≈ ${ft(c.w)} × ${ft(c.h)}</div></div>
+    <span class="note">Not sure? Pick the closest size. Our team measures the opening before production.</span>`);
+  h+=step("Core & thickness",`${chips("core",CORES,c.core,o=>o.mult===1?"base":(o.mult>1?"+":"−")+Math.round(Math.abs(o.mult-1)*100)+"%")}
+    <div class="sub">Shutter thickness</div>${chips("thick",THICK,c.thick)}${adv.filter(a=>a.includes("WPC")||a.includes("40 mm")).join("")}`);
+  h+=step("Finish & colour",`${chips("finish",FINISHES,c.finish,o=>o.note)}
+    <div class="swatches">${fin.colors.map(k=>`<button type="button" class="sw${k.id===c.color?" on":""}" data-set="color" data-val="${k.id}" aria-pressed="${k.id===c.color}"><i style="background:${k.hex}${k.grain?`;background-image:repeating-linear-gradient(95deg,transparent 0 5px,rgba(0,0,0,.14) 5px 7px)`:""}"></i>${k.label}</button>`).join("")}</div>`);
+  if(s.glass) h+=step("Glass",chips("glass",GLASS,c.glass,o=>"+"+inr(o.price)));
+  h+=step("Handle & lock",`${chips("handle",HANDLES,c.handle,o=>inr(o.price))}<div class="sub">Hardware finish</div>
+    <div class="swatches">${HWF.map(k=>`<button type="button" class="sw${k.id===c.hw?" on":""}" data-set="hw" data-val="${k.id}" aria-pressed="${k.id===c.hw}"><i style="background:${k.hex}"></i>${k.label}</button>`).join("")}</div>
+    <div class="sub">Lock</div>${chips("lock",LOCKS,c.lock,o=>o.price?inr(o.price):"—")}${adv.filter(a=>a.includes("lock")).join("")}`);
+  h+=step("Frame & fitting",`${s.noFrame?`<span class="note">${s.name} doors don't use a conventional frame. ${s.special.label} included at ${inr(s.special.price)}.</span>`:
+    `${chips("frame",FRAMES,c.frame,o=>o.price?inr(o.price):"existing frame")}
+    <label class="toggle"><input type="checkbox" id="tg-arch" data-toggle="arch" ${c.arch?"checked":""}> Add architrave moulding on both faces (${inr(ARCH)})</label>
+    <div class="sub">Hinges</div>${chips("hinge",[{id:"standard",label:"Ball-bearing, visible"},{id:"concealed",label:"Concealed 3D"}],c.hinge,o=>o.id==="standard"?"included":"+"+inr(CONCEALED))}`}
+    <div class="sub">Handing (standing on the side it opens toward)</div>
+    ${chips("swing",[{id:"L",label:"Left hand"},{id:"R",label:"Right hand"}],c.swing)}
+    ${c.style==="barn"?"":chips("open",[{id:"in",label:"Opens inward"},{id:"out",label:"Opens outward"}],c.open)}
+    <label class="toggle"><input type="checkbox" id="tg-inst" data-toggle="install" ${c.install?"checked":""}> Include fitting & installation (${inr(s.install||INSTALL)} per door)</label>`);
+  $("#options").innerHTML=h;
+  renderPrice();
+}
+function renderPrice(){
+  const c=S.cfg,p=price(c),editing=S.editing&&S.quote.some(i=>i.id===S.editing);
+  const btn=`<button type="button" class="btn primary" data-act="add">${editing?"Save changes":"Add to quote"}</button>`;
+  const qty=`<div class="qty" aria-label="Quantity"><button type="button" data-act="qm" aria-label="Fewer">−</button><span>${c.qty}</span><button type="button" data-act="qp" aria-label="More">+</button></div>`;
+  $("#pricebox").innerHTML=`<div class="big"><div><div class="label">Estimate per door, before GST</div><strong>${inr(p.unit)}</strong></div>
+      <div class="actions">${qty}${btn}</div></div>
+    ${c.qty>1?`<div class="note mono">${c.qty} doors · ${inr(p.unit*c.qty)} before GST</div>`:""}
+    <details><summary>Price breakdown</summary><table class="bd">${p.lines.map(l=>`<tr><td>${esc(l[0])}</td><td>${l[1]?inr(l[1]):"included"}</td></tr>`).join("")}</table></details>
+    ${editing?`<button type="button" class="btn ghost small" data-act="canceledit">Cancel editing</button>`:""}`;
+  $("#mbar").innerHTML=`<div><div class="label">Per door</div><strong>${inr(p.unit)}</strong></div><div class="actions">${qty}${btn}</div>`;
+}
+function setCfg(k,v){
+  const c=S.cfg;
+  if(k==="style"){const keep={qty:c.qty,swing:c.swing};const nc=defaultCfg(v);if(STY(v).rooms.includes(c.room))nc.room=c.room;S.cfg={...nc,...keep}}
+  else if(k==="size"){const [w,h]=v.split("x").map(Number);c.w=w;c.h=h}
+  else if(k==="finish"){c.finish=v;const f=by(FINISHES,v);if(!f.colors.some(x=>x.id===c.color))c.color=f.colors[0].id}
+  else if(k==="thick") c.thick=Number(v);
+  else c[k]=v;
+  save(); renderDesign();
+}
+
+/* ============ visualise ============ */
+function vizCfg(){const it=S.quote.find(i=>i.id===S.viz.pick);return it?it.cfg:S.cfg}
+function sampleScene(){return `<svg class="scene" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <rect width="800" height="470" style="fill:var(--wall)"/><rect y="470" width="800" height="130" style="fill:var(--floor)"/>
+  <rect y="455" width="800" height="15" style="fill:var(--skirt)"/>
+  <rect x="80" y="120" width="130" height="170" fill="none" stroke-width="6" style="stroke:var(--muted)"/><rect x="96" y="136" width="98" height="138" style="fill:var(--wall-2)"/>
+  <circle cx="145" cy="190" r="26" style="fill:var(--line)"/><rect x="590" y="300" width="18" height="30" rx="3" style="fill:var(--skirt);stroke:var(--line)"/>
+  <path d="M640 470 q-8 -60 6 -110 q14 50 6 110z M660 470 q4 -70 34 -120 q-6 70 -22 120z M625 470 q-30 -50 -26 -100 q20 40 36 100z" style="fill:var(--accent)" opacity=".55"/>
+  <rect x="628" y="455" width="44" height="40" rx="4" style="fill:var(--muted)"/></svg>`}
+function renderViz(){
+  const st=$("#vstage"),v=S.viz,c=vizCfg();
+  st.innerHTML=(v.photo?`<img src="${v.photo}" alt="Your doorway photo">`:sampleScene())+
+    (()=>{const svg=doorSVG(c,{mode:"bare"});return `<div class="vdoor" id="vdoor" style="height:${v.size}%;aspect-ratio:${lastVB[2]}/${lastVB[3]};left:${v.x}%;top:${v.y}%;transform:translate(-50%,-50%)">${svg}</div>`})();
+  $("#vpick").innerHTML=`<option value="cur">Current design · ${esc(STY(S.cfg.style).name)}</option>`+S.quote.map((it,i)=>`<option value="${it.id}">Quote item ${i+1} · ${esc(STY(it.cfg.style).name)}</option>`).join("");
+  $("#vpick").value=S.quote.some(i=>i.id===v.pick)?v.pick:"cur";
+  $("#vsize").value=v.size;
+  $("#vsample").hidden=!v.photo;
+}
+(function dragSetup(){
+  let drag=null;
+  document.addEventListener("pointerdown",e=>{const d=e.target.closest("#vdoor");if(!d)return;const r=$("#vstage").getBoundingClientRect();
+    drag={sx:e.clientX,sy:e.clientY,x:S.viz.x,y:S.viz.y,w:r.width,h:r.height,el:d};d.setPointerCapture(e.pointerId);e.preventDefault()});
+  document.addEventListener("pointermove",e=>{if(!drag)return;S.viz.x=Math.max(0,Math.min(100,drag.x+(e.clientX-drag.sx)/drag.w*100));S.viz.y=Math.max(0,Math.min(100,drag.y+(e.clientY-drag.sy)/drag.h*100));
+    drag.el.style.left=S.viz.x+"%";drag.el.style.top=S.viz.y+"%"});
+  document.addEventListener("pointerup",()=>drag=null);
+})();
+
+/* ============ quote ============ */
+function renderQuote(){
+  const t=totals(S.quote), f=S.form;
+  $("#qcount").hidden=!S.quote.length; $("#qcount").textContent=t.doors;
+  if(S.done){
+    $("#items").innerHTML=`<div class="done"><span class="label">Request sent</span><h3>Thank you, ${esc(S.done.customer.name.split(" ")[0])}</h3>
+      <div>Reference <span class="ref">${S.done.ref}</span></div>
+      <p style="margin:0">${S.done.where==="cloud"?`The showroom has your request. Expect a call on ${esc(S.done.customer.phone)} within one working day${S.done.customer.visit?" to fix a site measurement":""}.`:
+        `Saved on this device. This view isn't connected to the showroom inbox, so copy the summary below and send it on WhatsApp to <span class="mono">${BRAND.phone}</span>.`}</p>
+      <pre class="sum" id="sumtext">${esc(quoteText(S.done))}</pre>
+      <div class="actions"><button type="button" class="btn" data-act="copy">Copy summary</button><button type="button" class="btn primary" data-act="newquote">Start a new quote</button></div></div>`;
+    $("#qpanel").hidden=true;
+  } else if(!S.quote.length){
+    $("#items").innerHTML=`<div class="empty"><h3>No doors yet</h3><p style="margin:0">Design a door and tap <b>Add to quote</b>. Add one line per door type, with the quantity you need.</p>
+      <div class="actions"><button type="button" class="btn primary" data-tab="design">Add the door you're designing</button><button type="button" class="btn" data-tab="browse">Browse styles</button></div></div>`;
+    $("#qpanel").hidden=true;
+  } else {
+    $("#qpanel").hidden=false;
+    $("#items").innerHTML=S.quote.map((it,i)=>{const p=price(it.cfg);return `<div class="item"><div class="thumb">${doorSVG(it.cfg,{mode:"mini"})}</div>
+      <div style="min-width:0"><div class="label">${by(ROOMS,it.cfg.room)?.label||""}</div><h3>${STY(it.cfg.style).name}</h3><div class="spec">${esc(summary(it.cfg))}</div>
+      <div class="actions" style="margin-top:6px"><button type="button" class="btn ghost small" data-act="edit" data-id="${it.id}">Edit</button><button type="button" class="btn ghost small" data-act="dup" data-id="${it.id}">Duplicate</button><button type="button" class="btn ghost small" data-act="del" data-id="${it.id}">Remove</button></div></div>
+      <div class="right"><div class="qty"><button type="button" data-act="iqm" data-id="${it.id}" aria-label="Fewer">−</button><span>${it.cfg.qty}</span><button type="button" data-act="iqp" data-id="${it.id}" aria-label="More">+</button></div>
+      <div class="amt">${inr(p.unit*it.cfg.qty)}</div><div class="note mono">${inr(p.unit)} each</div></div></div>`}).join("")+
+      `<button type="button" class="btn" data-tab="browse" style="align-self:flex-start">+ Add another door</button>`;
+    $("#qpanel").innerHTML=`<div class="totals"><span>${t.doors} door${t.doors>1?"s":""}, subtotal</span><span class="v">${inr(t.sub)}</span>
+      <span>GST at ${BRAND.gst*100}%</span><span class="v">${inr(t.gst)}</span>
+      <span class="label" style="align-self:end">Estimated total</span><span class="v grand">${inr(t.total)}</span></div>
+      <p class="note" style="margin:0">Estimate only. The final quote follows a free site measurement and may change with opening size and wall condition.</p>
+      <form class="form" id="qform" novalidate>
+        <div class="field full"><label for="f-name">Your name</label><input id="f-name" data-f="name" autocomplete="name" value="${esc(f.name)}"><span class="err" id="e-name"></span></div>
+        <div class="field"><label for="f-phone">Mobile</label><input id="f-phone" data-f="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98765 43210" value="${esc(f.phone)}"><span class="err" id="e-phone"></span></div>
+        <div class="field"><label for="f-email">Email (optional)</label><input id="f-email" data-f="email" type="email" autocomplete="email" value="${esc(f.email)}"></div>
+        <div class="field full"><label for="f-area">Site locality</label><input id="f-area" data-f="area" placeholder="e.g. Kokapet, Gachibowli" value="${esc(f.area)}"><span class="err" id="e-area"></span></div>
+        <div class="field"><label for="f-type">Project</label><select id="f-type" data-f="type">${["New home","Renovation","Office / commercial","Builder project"].map(o=>`<option${o===f.type?" selected":""}>${o}</option>`).join("")}</select></div>
+        <div class="field"><label for="f-when">Needed by</label><select id="f-when" data-f="when">${["Within 2 weeks","1–2 months","3+ months","Just exploring"].map(o=>`<option${o===f.when?" selected":""}>${o}</option>`).join("")}</select></div>
+        <label class="toggle full"><input type="checkbox" id="f-visit" data-f="visit" ${f.visit?"checked":""}> Book a free site measurement</label>
+        <div class="field full"><label for="f-notes">Notes for the showroom</label><textarea id="f-notes" data-f="notes" rows="3" placeholder="Wall type, existing frames to remove, delivery floor…">${esc(f.notes)}</textarea></div>
+        <button type="submit" class="btn primary full" id="f-send">Send quote request</button>
+      </form>`;
+  }
+  renderHistory();
+}
+function quoteText(r){
+  return `${BRAND.name} quote request ${r.ref}\n${new Date(r.createdAt).toLocaleString("en-IN")}\n\n${r.customer.name} · ${r.customer.phone}${r.customer.email?" · "+r.customer.email:""}\nSite: ${r.customer.area} · ${r.customer.type} · ${r.customer.when}${r.customer.visit?" · site measurement requested":""}\n\n`+
+    r.items.map((it,i)=>`${i+1}. ${by(ROOMS,it.cfg.room)?.label||""}: ${summary(it.cfg)}\n   ${it.cfg.qty} × ${inr(it.unit)} = ${inr(it.unit*it.cfg.qty)}`).join("\n")+
+    `\n\nSubtotal ${inr(r.sub)} · GST ${inr(r.gst)} · Total ${inr(r.total)}${r.customer.notes?`\n\nNotes: ${r.customer.notes}`:""}`;
+}
+function renderHistory(){
+  const list=[...S.mine].sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+  $("#history").innerHTML=list.length?`<div class="panel"><h2 style="font-size:24px;text-transform:uppercase">Your requests</h2><div class="hist">${list.map(r=>`<div class="hrow">
+    <div><span class="mono">${r.ref}</span> · ${new Date(r.createdAt).toLocaleDateString("en-IN",{day:"numeric",month:"short"})} · ${r.items.reduce((a,i)=>a+i.cfg.qty,0)} doors · <span class="mono">${inr(r.total)}</span></div>
+    <span class="pill st-${r.status}">${by(STATUS,r.status)?.label||r.status}</span></div>`).join("")}</div></div>`:"";
+}
+async function submitQuote(){
+  const f=S.form; let ok=true;
+  const digits=(f.phone||"").replace(/\D/g,"").replace(/^91(?=\d{10}$)/,"").replace(/^0(?=\d{10}$)/,"");
+  $("#e-name").textContent=f.name.trim()?"":"Enter your name so the showroom knows who to ask for."; if(!f.name.trim())ok=false;
+  const pOk=/^[6-9]\d{9}$/.test(digits); $("#e-phone").textContent=pOk?"":"Enter a 10-digit Indian mobile number."; if(!pOk)ok=false;
+  $("#e-area").textContent=f.area.trim()?"":"Enter the locality so we can plan the site visit."; if(!f.area.trim())ok=false;
+  if(!ok) return;
+  const btn=$("#f-send"); btn.disabled=true; btn.textContent="Sending…";
+  const t=totals(S.quote), d=new Date();
+  const ref=`${BRAND.refPrefix}-${String(d.getFullYear()).slice(2)}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
+  const req={ref,createdAt:d.toISOString(),status:"new",customer:{...f,phone:"+91 "+digits.slice(0,5)+" "+digits.slice(5)},
+    items:S.quote.map(it=>({cfg:it.cfg,unit:price(it.cfg).unit})),sub:t.sub,gst:t.gst,total:t.total};
+  let where="local";
+  if(DB&&UID){try{const ref_=DB.doc("quotes/"+UID);const snap=await ref_.get();const prev=snap.exists?(snap.data().requests||[]):[];
+    await ref_.set({requests:[...prev,req].slice(-25),updatedAt:req.createdAt});where="cloud"}catch(e){console.warn("Quote save failed",e)}}
+  if(where==="local"){S.mine=[...S.mine,req];store.set("th.mine",S.mine)}
+  S.done={...req,where}; S.quote=[]; S.editing=null; save(); renderQuote(); toast(where==="cloud"?"Quote request sent":"Quote saved on this device");
+}
+
+/* ============ inbox ============ */
+function renderInbox(){
+  const all=S.inbox, cnt=id=>all.filter(r=>r.status===id).length;
+  $("#icount").hidden=!cnt("new"); $("#icount").textContent=cnt("new");
+  $("#istats").innerHTML=STATUS.map(s=>`<span class="pill st-${s.id}">${s.label} ${cnt(s.id)}</span>`).join("");
+  $("#inbox").innerHTML=all.length?all.map(r=>`<article class="req s-${r.status}"><header>
+      <div><div class="label mono">${r.ref} · ${new Date(r.createdAt).toLocaleString("en-IN",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div>
+      <h3>${esc(r.customer.name)}</h3><div class="who"><span class="mono">${esc(r.customer.phone)}</span>${r.customer.email?` · ${esc(r.customer.email)}`:""} · ${esc(r.customer.area)} · ${esc(r.customer.type)} · needed ${esc(r.customer.when.toLowerCase())}${r.customer.visit?" · <b>wants site measurement</b>":""}</div></div>
+      <div class="field"><label for="st-${r.ref}">Status</label><select id="st-${r.ref}" data-status="${r.ref}" data-doc="${r._doc}">${STATUS.map(s=>`<option value="${s.id}"${s.id===r.status?" selected":""}>${s.label}</option>`).join("")}</select></div></header>
+      <ul>${r.items.map(it=>`<li><b>${it.cfg.qty} ×</b> ${esc(by(ROOMS,it.cfg.room)?.label||"")}: <span class="mono" style="font-size:12px">${esc(summary(it.cfg))}</span> · ${inr(it.unit)} each</li>`).join("")}</ul>
+      <div class="actions" style="justify-content:space-between"><span class="mono">Total ${inr(r.total)} incl. GST</span>${r.customer.notes?`<span class="note">“${esc(r.customer.notes)}”</span>`:""}</div></article>`).join("")
+    :`<div class="empty"><h3>No requests yet</h3><p style="margin:0">When a customer sends a quote from the Quote tab, it lands here with their doors, contact and site details.</p></div>`;
+}
+async function setStatus(docId,ref,status){
+  try{const r=DB.doc("quotes/"+docId);const snap=await r.get();if(!snap.exists)return;
+    const reqs=(snap.data().requests||[]).map(q=>q.ref===ref?{...q,status}:q);await r.set({...snap.data(),requests:reqs});toast("Status updated")}
+  catch(e){toast("Couldn't update the status. Check your connection and try again.");renderInbox()}
+}
+
+/* ============ render & events ============ */
+function render(){
+  if(S.tab==="browse")renderBrowse();
+  if(S.tab==="design")renderDesign();
+  if(S.tab==="visualise")renderViz();
+  if(S.tab==="quote")renderQuote();
+  if(S.tab==="inbox")renderInbox();
+  const t=totals(S.quote);$("#qcount").hidden=!S.quote.length;$("#qcount").textContent=t.doors;
+}
+document.addEventListener("click",async e=>{
+  const el=e.target.closest("[data-tab],[data-room],[data-pick],[data-set],[data-act]"); if(!el)return;
+  if(el.dataset.tab){go(el.dataset.tab);return}
+  if(el.dataset.room){S.room=el.dataset.room;renderBrowse();return}
+  if(el.dataset.pick){S.cfg=defaultCfg(el.dataset.pick);S.editing=null;if(S.room!=="all"&&STY(el.dataset.pick).rooms.includes(S.room))S.cfg.room=S.room;save();go("design");return}
+  if(el.dataset.set){setCfg(el.dataset.set,el.dataset.val);return}
+  const a=el.dataset.act, id=el.dataset.id, it=S.quote.find(i=>i.id===id);
+  if(a==="qm"||a==="qp"){S.cfg.qty=Math.max(1,Math.min(99,S.cfg.qty+(a==="qp"?1:-1)));save();renderPrice()}
+  else if(a==="add"){const editing=S.editing&&S.quote.some(i=>i.id===S.editing);
+    if(editing){S.quote=S.quote.map(i=>i.id===S.editing?{...i,cfg:{...S.cfg}}:i);S.editing=null;toast("Quote item updated")}
+    else{S.quote.push({id:uid(),cfg:{...S.cfg}});toast(`Added ${S.cfg.qty} × ${STY(S.cfg.style).name} to your quote`)}
+    S.done=null;save();renderPrice();render()}
+  else if(a==="canceledit"){S.editing=null;renderPrice()}
+  else if(a==="edit"&&it){S.cfg={...it.cfg};S.editing=id;save();go("design")}
+  else if(a==="dup"&&it){S.quote.splice(S.quote.indexOf(it)+1,0,{id:uid(),cfg:{...it.cfg}});save();renderQuote()}
+  else if(a==="del"&&it){S.quote=S.quote.filter(i=>i!==it);save();renderQuote();render()}
+  else if((a==="iqm"||a==="iqp")&&it){it.cfg.qty=Math.max(1,Math.min(99,it.cfg.qty+(a==="iqp"?1:-1)));save();renderQuote()}
+  else if(a==="newquote"){S.done=null;renderQuote()}
+  else if(a==="copy"){const txt=$("#sumtext").textContent;try{await navigator.clipboard.writeText(txt);toast("Summary copied")}catch{const r=document.createRange();r.selectNodeContents($("#sumtext"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Press Ctrl/Cmd + C to copy")}}
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.num){const k=t.dataset.num,lim=k==="w"?[600,1500]:[1800,3000];let v=Math.round((+t.value||S.cfg[k])/10)*10;v=Math.max(lim[0],Math.min(lim[1],v));S.cfg[k]=v;save();renderDesign()}
+  else if(t.dataset.toggle){S.cfg[t.dataset.toggle]=t.checked;save();renderDesign()}
+  else if(t.dataset.f){S.form[t.dataset.f]=t.type==="checkbox"?t.checked:t.value;save()}
+  else if(t.id==="vpick"){S.viz.pick=t.value;renderViz()}
+  else if(t.id==="vfile"&&t.files[0]){const fr=new FileReader();fr.onload=()=>{S.viz.photo=fr.result;renderViz()};fr.readAsDataURL(t.files[0])}
+  else if(t.dataset.status){setStatus(t.dataset.doc,t.dataset.status,t.value)}
+});
+document.addEventListener("input",e=>{const t=e.target;
+  if(t.id==="vsize"){S.viz.size=+t.value;const d=$("#vdoor");if(d)d.style.height=t.value+"%"}
+  else if(t.dataset.f&&t.type!=="checkbox"){S.form[t.dataset.f]=t.value;save()}});
+document.addEventListener("submit",e=>{if(e.target.id==="qform"){e.preventDefault();submitQuote()}});
+$("#vreset").onclick=()=>{Object.assign(S.viz,{x:50,y:52,size:62});renderViz()};
+$("#vsample").onclick=()=>{S.viz.photo=null;$("#vfile").value="";renderViz()};
+
+/* ============ boot ============ */
+$("#brandName").textContent=BRAND.name; $("#brandTag").textContent=BRAND.tag;
+go("browse");
+(async()=>{
+  if(!window.claude?.use) return;
+  try{
+    const [db,user]=await Promise.all([claude.use("db"),claude.use("user")]);
+    DB=db; USER=user; if(!DB||!USER) return;
+    UID=await USER.id();
+    if(UID) DB.doc("quotes/"+UID).onSnapshot(snap=>{const cloud=snap.exists?(snap.data().requests||[]):[];const local=store.get("th.mine",[]);
+      S.mine=[...cloud,...local.filter(l=>!cloud.some(c=>c.ref===l.ref))];if(S.tab==="quote")renderHistory()},()=>{});
+    S.admin=await USER.canEdit();
+    if(S.admin){$("#t-inbox").hidden=false;
+      DB.collection("quotes").onSnapshot(snap=>{S.inbox=snap.docs.flatMap(d=>((d.data()||{}).requests||[]).map(r=>({...r,_doc:d.id}))).sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+        renderInbox()},()=>{});}
+  }catch(e){console.warn(e)}
+})();
+</script>
+
+</body></html>
