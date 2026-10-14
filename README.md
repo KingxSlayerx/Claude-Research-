@@ -6,7 +6,7 @@ The website, door configurator, quote journey and showroom inbox for Threshold. 
 
 - **Homepage** — a scroll-driven 3D hero in which the door swings open, a live finish picker on a real-time 3D door, collections, close-ups of materials and hardware, the visualiser, the measure-make-fit process and a closing call to action.
 - **Catalogue** (`/doors`) — the nine original designs, filterable by room and collection, each with a product page showing its standard specification and what the starting price includes.
-- **Configurator** (`/design`) — a live 3D preview you can rotate and open, plus a dimensioned drawing, with every option from the original (size, core, thickness, finish, colour, glass, handle, hardware finish, lock, frame, architrave, hinges, handing, installation, quantity) with a live preview and itemised estimate.
+- **Configurator** (`/design`) — a live 3D preview you can rotate and open, plus a dimensioned drawing, with every option from the original (size, core, thickness, finish, colour, glass, handle, hardware finish, lock, frame, architrave, hinges, handing, installation, quantity) and an itemised estimate.
 - **Visualiser** (`/visualise`) — place your design on a photo of your doorway or a sample room. Photos never leave the device.
 - **Quote** (`/quote`) — multi-door quote with edit / duplicate / remove, GST, a validated contact form and a confirmed reference number.
 - **Showroom inbox** (`/admin`) — staff sign-in, search, status filters, request detail, call / WhatsApp / email actions, status changes and notes with full history.
